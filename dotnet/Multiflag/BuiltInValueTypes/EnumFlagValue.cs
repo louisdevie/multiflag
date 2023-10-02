@@ -1,5 +1,10 @@
 ﻿namespace Multiflag.BuiltInValueTypes
 {
+    public class InvalidEnumTypeException : Exception
+    {
+        public InvalidEnumTypeException(string message) : base(message) { }
+    }
+
     /// <summary>
     /// Built-in implementation of <see cref="IFlagValue{T}"/> for <see cref="Enum"/>s backed by <see cref="int"/>.
     /// </summary>
@@ -8,7 +13,7 @@
         public EnumFlagValue()
         {
             if (!typeof(int).IsAssignableFrom(Enum.GetUnderlyingType(typeof(TEnum))))
-                throw new TypeLoadException("FlagEnums are only compatible with int-backed enums.");
+                throw new InvalidEnumTypeException("FlagEnums are only compatible with int-backed enums.");
         }
 
         private int EnumToInt(TEnum value)

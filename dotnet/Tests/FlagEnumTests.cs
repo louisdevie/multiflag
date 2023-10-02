@@ -1,4 +1,5 @@
 using Multiflag.BuiltInValueTypes;
+using System.Reflection;
 
 namespace Tests
 {
@@ -13,6 +14,8 @@ namespace Tests
             None = 0,
             All = A | B | C
         }
+
+        private enum TheWrongEnum : ulong { Caca }
 
         [Fact]
         public void Addition()
@@ -187,6 +190,26 @@ namespace Tests
             Assert.False(flag4.NegativeEquals(flag2));
             Assert.False(flag4.NegativeEquals(flag3));
             Assert.True(flag4.NegativeEquals(flag4));
+        }
+
+        [Fact]
+        public void ThrowsWhenNotInt()
+        {
+            try
+            { 
+                FlagEnum<TheWrongEnum> flag = new(TheWrongEnum.Caca);
+            }
+            catch (TargetInvocationException error)
+            {
+                if (error.InnerException is not InvalidEnumTypeException)
+                {
+                    Assert.Fail($"Wrong exception type inside the TargetInvocationException (expected InvalidEnumTypeException, got {error.InnerException?.GetType()}");
+                }
+            }
+            catch (Exception other)
+            {
+                Assert.Fail($"Wrong exception type thrown (expected TargetInvocationException, got {other.GetType()}");
+            }
         }
     }
 }
