@@ -26,3 +26,7 @@ But Multiflag is extensible, you can implement an adapter for any custom type of
 
 This library was developed to provide the [Gallium+](https://github.com/galliumplus) server and clients with a reliable way to manage permissions. The primary goal
 is thus to support C# and Typescipt, but support for other languages (I'm thinking Python, Go, Rust) may come later.
+
+## Licensing
+
+Multiglag is available under the [MIT License](LICENSE). ⓒ 2023 Louis DEVIE.
