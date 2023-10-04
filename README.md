@@ -10,7 +10,7 @@ a permission may require other permissions to be allowed).
 - [Multiflag .NET](dotnet/README.md)&emsp;[![Nuget Package](https://img.shields.io/nuget/v/Multiflag)](https://www.nuget.org/packages/Multiflag)
 - *Multiflag Typescript planned*
 
-# How it works
+## How it works
 
 Multiflag work with two types : flags and flag sets.
 A flag set can be any value that can represent a group of boolean properties (integers as bitflags, a list of the enabled flags, ...).
@@ -21,3 +21,8 @@ by providing the relevant operation on said type.
 
 Two kind of flags are supported out of the box : a bitflag implementation for integers and enums, and a list-based (or rather, set-based) implementation, which covers most of the common needs.
 But Multiflag is extensible, you can implement an adapter for any custom type of flag representation you want.
+
+## Why ?
+
+This library was developed to provide the [Gallium+](https://github.com/galliumplus) server and clients with a reliable way to manage permissions. The primary goal
+is thus to support C# and Typescipt, but support for other languages (I'm thinking Python, Go, Rust) may come later.
