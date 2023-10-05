@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Multiflag</Title>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <Authors>Louis DEVIE</Authors>
     <Company />
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/louisdevie/multiflag</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>A library to help you manipulate (bit)flags easily and enables you to implement inheritance between flags.</Description>
+    <PackageProjectUrl>https://louisdevie.github.io/multiflag</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
