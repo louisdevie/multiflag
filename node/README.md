@@ -1,0 +1,1 @@
+# Multiflag for JavaScript and TypeScript
