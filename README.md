@@ -4,8 +4,7 @@
     <img src="https://codecov.io/gh/louisdevie/multiflag/graph/badge.svg?token=jzEIGeLIEj"/></a></h1>
 
 Multiflag is a tiny language-agnostic library that makes manipulating bitflags (or any other kind of flag system) easier,
-especially if you have flags that depend on each other (for example, if you're managing permissions and
-a permission may require other permissions to be allowed).
+especially if you have flags that depend on each other (for example, if you're managing permissions).
 
 - [Multiflag .NET](dotnet/README.md)&emsp;[![Nuget Package](https://img.shields.io/nuget/v/Multiflag)](https://www.nuget.org/packages/Multiflag)
 - [Multiflag JavaScript/TypeScript](node/README.md)&emsp;[![npm](https://img.shields.io/npm/v/multiflag)](https://https://www.npmjs.com/package/multiflag)
