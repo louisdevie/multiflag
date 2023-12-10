@@ -75,4 +75,7 @@ jobs:
       run: python3 -m pip install bs4 lxml
     - name: Merge coverage reports
       run: python3 .scripts/merge_coverage_reports.py dotnet/coverage.xml node/coverage.xml > merged.xml
-    - run: cat merged.xml
+    - uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./merged.xml
