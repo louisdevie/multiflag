@@ -19,6 +19,8 @@
     "clean": true
   },
   "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
     "collectCoverageFrom": "src/**/*.ts",
     "coverageReporters": ["json"]
   },

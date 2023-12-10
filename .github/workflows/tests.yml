@@ -23,6 +23,9 @@ jobs:
       run: dotnet restore
     - name: Run tests
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=json /p:CoverletOutput='./coverage.json'
+    - run: |
+        pwd
+        ls -Rl
     - name: Upload coverage artifacts for .NET
       uses: actions/upload-artifact@v3
       with:
@@ -46,6 +49,9 @@ jobs:
     - run: npm run type-check
     - run: npm run build
     - run: npm test -- --collectCoverage --coverageDirectory .
+    - run: |
+        pwd
+        ls -Rl
     - name: Upload coverage artifacts for Node.js
       uses: actions/upload-artifact@v3
       with:
