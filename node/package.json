@@ -18,6 +18,10 @@
     "sourcemap": true,
     "clean": true
   },
+  "jest": {
+    "collectCoverageFrom": "src/**/*.ts",
+    "coverageReporters": ["json"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/louisdevie/multiflag.git"

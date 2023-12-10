@@ -1,0 +1,73 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: { }
+
+jobs:
+  dotnet:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dotnet
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Run tests
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=json /p:CoverletOutput='./coverage.json'
+    - name: Upload coverage artifacts for .NET
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-coverage
+          path: coverage.json
+
+  node:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./node
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run type-check
+    - run: npm run build
+    - run: npm test -- --collectCoverage --coverageDirectory .
+    - name: Upload coverage artifacts for Node.js
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-coverage
+          path: coverage.json
+
+  merge-and-report:
+    runs-on: ubuntu-latest
+    needs: [dotnet, node]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Download coverage report of .NET tests
+      uses: actions/download-artifact@v3
+      with:
+        name: dotnet-coverage
+        path: dotnet
+    - name: Download coverage report of Node.js tests
+      uses: actions/download-artifact@v3
+      with:
+        name: node-coverage
+        path: node
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Merge coverage reports
+      run: python3 .scripts/merge-coverage-reports.py dotnet/coverage.json node/coverage.json
