@@ -27,7 +27,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: dotnet-coverage
-        path: coverage.json
+        path: ./dotnet/coverage.json
 
   node:
     runs-on: ubuntu-latest
@@ -41,6 +41,7 @@ jobs:
       with:
         node-version: 16
         cache: 'npm'
+        cache-dependency-path: './node/package-lock.json'
     - run: npm ci
     - run: npm run type-check
     - run: npm run build
@@ -49,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: node-coverage
-        path: coverage.json
+        path: ./node/coverage.json
 
   merge-and-report:
     runs-on: ubuntu-latest
