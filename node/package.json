@@ -18,6 +18,12 @@
     "sourcemap": true,
     "clean": true
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": ["src/**/*.ts"],
+    "coverageReporters": [ ["cobertura", {"file": "coverage.xml"}] ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/louisdevie/multiflag.git"
