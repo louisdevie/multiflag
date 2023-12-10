@@ -24,10 +24,10 @@ jobs:
     - name: Run tests
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=json /p:CoverletOutput='./coverage.json'
     - name: Upload coverage artifacts for .NET
-        uses: actions/upload-artifact@v3
-        with:
-          name: dotnet-coverage
-          path: coverage.json
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-coverage
+        path: coverage.json
 
   node:
     runs-on: ubuntu-latest
@@ -46,10 +46,10 @@ jobs:
     - run: npm run build
     - run: npm test -- --collectCoverage --coverageDirectory .
     - name: Upload coverage artifacts for Node.js
-        uses: actions/upload-artifact@v3
-        with:
-          name: node-coverage
-          path: coverage.json
+      uses: actions/upload-artifact@v3
+      with:
+        name: node-coverage
+        path: coverage.json
 
   merge-and-report:
     runs-on: ubuntu-latest
