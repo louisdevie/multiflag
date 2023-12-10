@@ -22,7 +22,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "collectCoverageFrom": ["src/**/*.ts"],
-    "coverageReporters": ["json"]
+    "coverageReporters": [ ["cobertura", {"file": "coverage.xml"}] ]
   },
   "repository": {
     "type": "git",

@@ -22,12 +22,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Run tests
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=json /p:CoverletOutput='./coverage.json'
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput='./coverage.xml'
     - name: Upload coverage artifacts for .NET
       uses: actions/upload-artifact@v3
       with:
         name: dotnet-coverage
-        path: ./dotnet/Tests/coverage.json
+        path: ./dotnet/Tests/coverage.xml
 
   node:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: node-coverage
-        path: ./node/coverage-final.json
+        path: ./node/coverage.xml
 
   merge-and-report:
     runs-on: ubuntu-latest
@@ -70,8 +70,6 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    - run: |
-        pwd
-        ls -Rl
     - name: Merge coverage reports
-      run: python3 .scripts/merge_coverage_reports.py dotnet/coverage.json node/coverage-final.json
+      run: python3 .scripts/merge_coverage_reports.py dotnet/coverage.xml node/coverage.xml > merged.xml
+    - run: cat merged.xml
