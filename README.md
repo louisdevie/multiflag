@@ -1,7 +1,10 @@
 <h1 align='center'>
   Multiflag<br/>
+  <a href="https://github.com/louisdevie/multiflag/actions/workflows/tests.yml" >
+    <img src="https://github.com/louisdevie/multiflag/actions/workflows/tests.yml/badge.svg" alt="Tests badge"/></a>
   <a href="https://codecov.io/gh/louisdevie/multiflag" > 
-    <img src="https://codecov.io/gh/louisdevie/multiflag/graph/badge.svg?token=jzEIGeLIEj"/></a></h1>
+    <img src="https://codecov.io/gh/louisdevie/multiflag/graph/badge.svg?token=jzEIGeLIEj" alt="Codecov badge"/></a>
+</h1>
 
 Multiflag is a tiny language-agnostic library that makes manipulating bitflags (or any other kind of flag system) easier,
 especially if you have flags that depend on each other (for example, if you're managing permissions).
