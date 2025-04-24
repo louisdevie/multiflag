@@ -27,16 +27,16 @@ This covers most of the common needs, but you can subclass `FlagSet` to work wit
 
 ## Compatible flag types
 
-|                             .NET                              | JS | .NET (v1)  |   JS (v1)    |
-|:-------------------------------------------------------------:|:--:|:----------:|:------------:|
-|  `U8BitflagSet` and <br/> `EnumBitflagSet` backed by `byte`   | ✗  |  `Flag8`   | `NumberFlag` |
-| `U16BitflagSet` and <br/> `EnumBitflagSet` backed by `ushort` | ✗  |  `Flag16`  | `NumberFlag` |
-|  `U32BitflagSet` and <br/> `EnumBitflagSet` backed by `uint`  | ✗  |  `Flag32`  | `NumberFlag` |
-| `U64BitflagSet` and <br/> `EnumBitflagSet` backed by `ulong`  | ✗  |  `Flag64`  |      ✗       |
-|                      `DynamicBitflagSet`                      | ✗  |     ✗      |      ✗       |
-|                      `Base64BitflagSet`                       | ✗  |     ✗      |      ✗       |
-|                        `HashedFlagSet`                        | ✗  | `FlagSet`  | `ArrayFlag`  |
-|                               ✗                               | ✗  | `FlagEnum` | `NumberFlag` |
+|                           .NET                            | JS | .NET (v1)  |   JS (v1)    |
+|:---------------------------------------------------------:|:--:|:----------:|:------------:|
+|  `U8BitflagSet` <br/> `EnumBitflagSet` backed by `byte`   | ✗  |  `Flag8`   | `NumberFlag` |
+| `U16BitflagSet` <br/> `EnumBitflagSet` backed by `ushort` | ✗  |  `Flag16`  | `NumberFlag` |
+|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  | ✗  |  `Flag32`  | `NumberFlag` |
+| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  | ✗  |  `Flag64`  |      ✗       |
+|                    `DynamicBitflagSet`                    | ✗  |     ✗      |      ✗       |
+|                    `Base64BitflagSet`                     | ✗  |     ✗      |      ✗       |
+|                      `HashedFlagSet`                      | ✗  | `FlagSet`  | `ArrayFlag`  |
+|                             ✗                             | ✗  | `FlagEnum` | `NumberFlag` |
 
 ## Why it exists
 
