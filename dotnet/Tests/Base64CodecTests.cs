@@ -72,7 +72,7 @@ public class Base64CodecTests
         Assert.Equal('-', Base64Codec.EncodeByte(62));
         Assert.Equal('_', Base64Codec.EncodeByte(63));
     }
-    
+
     [Fact]
     public void DecodeByte()
     {

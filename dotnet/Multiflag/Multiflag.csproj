@@ -19,9 +19,9 @@
     <ItemGroup>
         <Folder Include="Properties\"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-        <InternalsVisibleTo Include="Tests" />
+        <InternalsVisibleTo Include="Tests"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-      <PackageReference Include="System.Collections.Immutable" Version="9.0.4" />
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.4"/>
     </ItemGroup>
 
 </Project>

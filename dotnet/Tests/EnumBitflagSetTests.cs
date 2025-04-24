@@ -1,46 +1,7 @@
-using System;
-using System.Runtime.CompilerServices;
-
 namespace Multiflag.Tests;
 
 public class EnumBitflagSetTests
 {
-    private enum S8Enum : sbyte;
-
-    private enum U8Enum : byte 
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
-
-    private enum S16Enum : short;
-
-    private enum U16Enum : ushort
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
-
-    private enum S32Enum;
-
-    private enum U32Enum : uint
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
-
-    private enum S64Enum : long;
-
-    private enum U64Enum : ulong
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
-
     [Fact]
     public void SignedEnumsAreUnsupported()
     {
@@ -157,5 +118,41 @@ public class EnumBitflagSetTests
         Assert.False(flagB.IsAbstract);
         Assert.True(flags1And2.IsAbstract);
         Assert.False(flagC.IsAbstract);
+    }
+
+    private enum S8Enum : sbyte;
+
+    private enum U8Enum : byte
+    {
+        A = 1,
+        B = 2,
+        C = 4
+    }
+
+    private enum S16Enum : short;
+
+    private enum U16Enum : ushort
+    {
+        A = 1,
+        B = 2,
+        C = 4
+    }
+
+    private enum S32Enum;
+
+    private enum U32Enum : uint
+    {
+        A = 1,
+        B = 2,
+        C = 4
+    }
+
+    private enum S64Enum : long;
+
+    private enum U64Enum : ulong
+    {
+        A = 1,
+        B = 2,
+        C = 4
     }
 }

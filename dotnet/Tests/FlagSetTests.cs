@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
-
 namespace Multiflag.Tests;
 
 public class FlagSetTests
@@ -10,11 +7,11 @@ public class FlagSetTests
     {
         var flags = new U8BitflagSet();
         var flag = flags.Flag(1);
-        
+
         var otherFlags = new U8BitflagSet();
         Assert.Throws<ForeignFlagException>(() => otherFlags.Flag(2, flag));
     }
-    
+
     [Fact]
     public void UseSameValueTwice()
     {

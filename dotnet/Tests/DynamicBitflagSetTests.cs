@@ -1,13 +1,11 @@
-using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Multiflag.Tests;
 
 public class DynamicBitflagSetTests
 {
     private static readonly BigInteger BigPowerOfTwo = new BigInteger(1) << 100;
-    
+
     [Fact]
     public void ValueNotAPowerOfTwo()
     {
@@ -35,7 +33,6 @@ public class DynamicBitflagSetTests
     [Fact]
     public void Remove()
     {
-        
         var flags = new DynamicBitflagSet();
         var flag1 = flags.Flag(1);
         var flag2 = flags.Flag(2);

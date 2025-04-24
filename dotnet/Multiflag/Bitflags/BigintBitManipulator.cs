@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Multiflag.Bitflags
 {
@@ -7,22 +6,37 @@ namespace Multiflag.Bitflags
     {
         private static BigintBitManipulator? current;
 
-        public static BigintBitManipulator Current => current ??= new BigintBitManipulator();
-
         private BigintBitManipulator()
         {
         }
 
-        protected override bool IsPowerOfTwo(BigInteger value) => value.IsPowerOfTwo;
+        public static BigintBitManipulator Current => current ??= new BigintBitManipulator();
 
         public override BigInteger Zero => 0;
 
-        public override bool IsZero(BigInteger flags) => flags == 0;
+        protected override bool IsPowerOfTwo(BigInteger value)
+        {
+            return value.IsPowerOfTwo;
+        }
 
-        public override BigInteger BitwiseOr(BigInteger first, BigInteger second) => first | second;
+        public override bool IsZero(BigInteger flags)
+        {
+            return flags == 0;
+        }
 
-        public override BigInteger BitwiseAndNot(BigInteger first, BigInteger second) => first & ~second;
+        public override BigInteger BitwiseOr(BigInteger first, BigInteger second)
+        {
+            return first | second;
+        }
 
-        public override bool BitwiseAndEquals(BigInteger first, BigInteger second) => (first & second) == second;
+        public override BigInteger BitwiseAndNot(BigInteger first, BigInteger second)
+        {
+            return first & ~second;
+        }
+
+        public override bool BitwiseAndEquals(BigInteger first, BigInteger second)
+        {
+            return (first & second) == second;
+        }
     }
 }

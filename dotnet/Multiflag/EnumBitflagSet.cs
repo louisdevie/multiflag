@@ -4,14 +4,14 @@ using Multiflag.Bitflags;
 namespace Multiflag
 {
     /// <summary>
-    /// Provides bitflags based on dynamic integers (thus allowing any number of flags).
+    ///     Provides bitflags based on dynamic integers (thus allowing any number of flags).
     /// </summary>
     public class EnumBitflagSet<T> : FlagSet<T>
     where T : Enum
     {
+        private readonly BitManipulator bitManipulator;
         private readonly Type enumType;
         private readonly Type underlyingType;
-        private readonly BitManipulator bitManipulator;
 
         public EnumBitflagSet()
         {
@@ -60,9 +60,15 @@ namespace Multiflag
             }
         }
 
-        private object EnumToInt(object value) => Convert.ChangeType(value, this.underlyingType);
+        private object EnumToInt(object value)
+        {
+            return Convert.ChangeType(value, this.underlyingType);
+        }
 
-        private T IntToEnum(object value) => (T)Enum.ToObject(this.enumType, value);
+        private T IntToEnum(object value)
+        {
+            return (T)Enum.ToObject(this.enumType, value);
+        }
 
         protected override void CheckValue(T value)
         {
@@ -74,17 +80,29 @@ namespace Multiflag
             }
         }
 
-        public override T Empty() => this.IntToEnum(this.bitManipulator.ZeroObject);
+        public override T Empty()
+        {
+            return this.IntToEnum(this.bitManipulator.ZeroObject);
+        }
 
-        public override bool IsEmpty(T flags) => this.bitManipulator.IsZero(this.EnumToInt(flags));
+        public override bool IsEmpty(T flags)
+        {
+            return this.bitManipulator.IsZero(this.EnumToInt(flags));
+        }
 
-        public override T Union(T first, T second) =>
-            this.IntToEnum(this.bitManipulator.BitwiseOr(this.EnumToInt(first), this.EnumToInt(second)));
+        public override T Union(T first, T second)
+        {
+            return this.IntToEnum(this.bitManipulator.BitwiseOr(this.EnumToInt(first), this.EnumToInt(second)));
+        }
 
-        public override T Difference(T first, T second) =>
-            this.IntToEnum(this.bitManipulator.BitwiseAndNot(this.EnumToInt(first), this.EnumToInt(second)));
+        public override T Difference(T first, T second)
+        {
+            return this.IntToEnum(this.bitManipulator.BitwiseAndNot(this.EnumToInt(first), this.EnumToInt(second)));
+        }
 
-        public override bool IsSupersetOf(T first, T second) =>
-            this.bitManipulator.BitwiseAndEquals(this.EnumToInt(first), this.EnumToInt(second));
+        public override bool IsSupersetOf(T first, T second)
+        {
+            return this.bitManipulator.BitwiseAndEquals(this.EnumToInt(first), this.EnumToInt(second));
+        }
     }
 }

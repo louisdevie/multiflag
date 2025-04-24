@@ -17,19 +17,46 @@ namespace Multiflag.Base64Format
 
         public static char EncodeByte(int value)
         {
-            if (value < 26) return (char)(ZERO + value);
-            else if (value < 52) return (char)(TWENTY_SIX + value - 26);
-            else if (value < 62) return (char)(FIFTY_TWO + value - 52);
-            else return value == 62 ? SIXTY_TWO : SIXTY_THREE;
+            if (value < 26)
+            {
+                return (char)(ZERO + value);
+            }
+            else if (value < 52)
+            {
+                return (char)(TWENTY_SIX + value - 26);
+            }
+            else if (value < 62)
+            {
+                return (char)(FIFTY_TWO + value - 52);
+            }
+            else
+            {
+                return value == 62 ? SIXTY_TWO : SIXTY_THREE;
+            }
         }
 
         public static int DecodeByte(char encodedValue)
         {
-            if (encodedValue == SIXTY_THREE) return 63;
-            else if (encodedValue == SIXTY_TWO) return 62;
-            else if (encodedValue >= TWENTY_SIX) return encodedValue - TWENTY_SIX + 26;
-            else if (encodedValue >= ZERO) return encodedValue - ZERO;
-            else return encodedValue - FIFTY_TWO + 52;
+            if (encodedValue == SIXTY_THREE)
+            {
+                return 63;
+            }
+            else if (encodedValue == SIXTY_TWO)
+            {
+                return 62;
+            }
+            else if (encodedValue >= TWENTY_SIX)
+            {
+                return encodedValue - TWENTY_SIX + 26;
+            }
+            else if (encodedValue >= ZERO)
+            {
+                return encodedValue - ZERO;
+            }
+            else
+            {
+                return encodedValue - FIFTY_TWO + 52;
+            }
         }
 
         public static string EncodeSingleFlag(int flagIndex)
@@ -57,8 +84,12 @@ namespace Multiflag.Base64Format
             foreach (char t in encodedValue)
             {
                 int value = DecodeByte(t);
-                if (value != 0 && (value & (value - 1)) == 0) powersOfTwo++;
+                if (value != 0 && (value & value - 1) == 0)
+                {
+                    powersOfTwo++;
+                }
             }
+
             return powersOfTwo == 1;
         }
 
@@ -85,11 +116,13 @@ namespace Multiflag.Base64Format
                 int value = DecodeByte(shorter[i]) | DecodeByte(longer[i]);
                 result.Append(EncodeByte(value));
             }
+
             // if one string is longer than the other, append the remaining bytes (x | 0 = x) 
             for (; i < longer.Length; i++)
             {
                 result.Append(longer[i]);
             }
+
             // make sure there is always one digit in the string
             // empty strings are considered equal to zero, but we always try to normalise the output
             if (i < 1)
@@ -103,7 +136,7 @@ namespace Multiflag.Base64Format
         public static string BitwiseAndNot(string first, string second)
         {
             var result = new StringBuilder();
-            
+
             int shorterLength = Math.Min(first.Length, second.Length);
             var i = 0;
             // AND the bytes one by one 
@@ -112,12 +145,14 @@ namespace Multiflag.Base64Format
                 int value = DecodeByte(first[i]) & ~DecodeByte(second[i]);
                 result.Append(EncodeByte(value));
             }
+
             // if the first string is longer than the other, append its remaining bytes (x & ~0 = x)
             // if the second string is longer, don't add anything (0 & ~y = 0)
             for (; i < first.Length; i++)
             {
                 result.Append(first[i]);
             }
+
             // make sure there is always one digit in the string
             // empty strings are considered equal to zero, but we always try to normalise the output
             if (i < 1)
@@ -131,7 +166,7 @@ namespace Multiflag.Base64Format
         public static bool BitwiseAndEquals(string first, string second)
         {
             var result = true;
-            
+
             int shorterLength = Math.Min(first.Length, second.Length);
             var i = 0;
             // AND the bytes one by one and check
@@ -141,6 +176,7 @@ namespace Multiflag.Base64Format
                 int secondValue = DecodeByte(second[i]);
                 result = (DecodeByte(first[i]) & secondValue) == secondValue;
             }
+
             // if there are more characters in the second string, they must all be zeros
             // (0 & x is only equal to x when x is also 0)
             for (; i < second.Length && result; i++)
