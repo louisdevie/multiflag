@@ -18,10 +18,10 @@ namespace Multiflag.Bitflags
 
         public override bool IsZero(ulong flags) => flags == 0;
 
-        public override ulong Or(ulong first, ulong second) => first | second;
+        public override ulong BitwiseOr(ulong first, ulong second) => first | second;
 
-        public override ulong AndNot(ulong first, ulong second) => first & ~second;
+        public override ulong BitwiseAndNot(ulong first, ulong second) => first & ~second;
 
-        public override bool AndEquals(ulong first, ulong second) => (first & second) == second;
+        public override bool BitwiseAndEquals(ulong first, ulong second) => (first & second) == second;
     }
 }

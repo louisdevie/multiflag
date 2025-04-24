@@ -18,10 +18,10 @@ namespace Multiflag.Bitflags
 
         public override bool IsZero(ushort flags) => flags == 0;
 
-        public override ushort Or(ushort first, ushort second) => (ushort)(first | second);
+        public override ushort BitwiseOr(ushort first, ushort second) => (ushort)(first | second);
 
-        public override ushort AndNot(ushort first, ushort second) => (ushort)(first & ~second);
+        public override ushort BitwiseAndNot(ushort first, ushort second) => (ushort)(first & ~second);
 
-        public override bool AndEquals(ushort first, ushort second) => (first & second) == second;
+        public override bool BitwiseAndEquals(ushort first, ushort second) => (first & second) == second;
     }
 }

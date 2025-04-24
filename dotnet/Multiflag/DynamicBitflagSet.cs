@@ -15,12 +15,12 @@ namespace Multiflag
         public override bool IsEmpty(BigInteger flags) => BigintBitManipulator.Current.IsZero(flags);
 
         public override BigInteger Union(BigInteger first, BigInteger second) =>
-            BigintBitManipulator.Current.Or(first, second);
+            BigintBitManipulator.Current.BitwiseOr(first, second);
 
         public override BigInteger Difference(BigInteger first, BigInteger second) =>
-            BigintBitManipulator.Current.AndNot(first, second);
+            BigintBitManipulator.Current.BitwiseAndNot(first, second);
 
         public override bool IsSupersetOf(BigInteger first, BigInteger second) =>
-            BigintBitManipulator.Current.AndEquals(first, second);
+            BigintBitManipulator.Current.BitwiseAndEquals(first, second);
     }
 }

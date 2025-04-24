@@ -12,11 +12,11 @@ public class HashedFlagSetTests
         var flags = new HashedFlagSet<string>();
         var flagB = flags.Flag("B");
         var flagC = flags.Flag("C");
-        var flags2And4 = flags.Flag(flagB, flagC);
+        var flagsBAndC = flags.Flag(flagB, flagC);
         
         Assert.Equal(ImmutableHashSet.Create("A", "B"), ImmutableHashSet.Create("A") + flagB);
         Assert.Equal(ImmutableHashSet.Create("A", "C"), ImmutableHashSet.Create("A") + flagC);
-        Assert.Equal(ImmutableHashSet.Create("A", "B", "C"), ImmutableHashSet.Create("A") + flags2And4);
+        Assert.Equal(ImmutableHashSet.Create("A", "B", "C"), ImmutableHashSet.Create("A") + flagsBAndC);
     }
     
     [Fact]
@@ -52,12 +52,12 @@ public class HashedFlagSetTests
         var flags = new HashedFlagSet<string>();
         var flagA = flags.Flag("A");
         var flagB = flags.Flag("B");
-        var flags1And2 = flags.Flag(flagA, flagB);
-        var flagC = flags.Flag("C", flags1And2);
+        var flagsAAndB = flags.Flag(flagA, flagB);
+        var flagC = flags.Flag("C", flagsAAndB);
         
         Assert.False(flagA.IsAbstract);
         Assert.False(flagB.IsAbstract);
-        Assert.True(flags1And2.IsAbstract);
+        Assert.True(flagsAAndB.IsAbstract);
         Assert.False(flagC.IsAbstract);
     }
 }

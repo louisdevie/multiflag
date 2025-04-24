@@ -18,10 +18,10 @@ namespace Multiflag.Bitflags
 
         public override bool IsZero(byte flags) => flags == 0;
 
-        public override byte Or(byte first, byte second) => (byte)(first | second);
+        public override byte BitwiseOr(byte first, byte second) => (byte)(first | second);
 
-        public override byte AndNot(byte first, byte second) => (byte)(first & ~second);
+        public override byte BitwiseAndNot(byte first, byte second) => (byte)(first & ~second);
 
-        public override bool AndEquals(byte first, byte second) => (first & second) == second;
+        public override bool BitwiseAndEquals(byte first, byte second) => (first & second) == second;
     }
 }

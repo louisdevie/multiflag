@@ -10,11 +10,11 @@ namespace Multiflag.Bitflags
 
         public abstract bool IsZero(object flags);
 
-        public abstract object Or(object first, object second);
+        public abstract object BitwiseOr(object first, object second);
 
-        public abstract object AndNot(object first, object second);
+        public abstract object BitwiseAndNot(object first, object second);
 
-        public abstract bool AndEquals(object first, object second);
+        public abstract bool BitwiseAndEquals(object first, object second);
     }
     
     internal abstract class BitManipulator<T> : BitManipulator
@@ -40,16 +40,16 @@ namespace Multiflag.Bitflags
         
         public abstract bool IsZero(T flags);
 
-        public override object Or(object first, object second) => this.Or((T)first, (T)second);
+        public override object BitwiseOr(object first, object second) => this.BitwiseOr((T)first, (T)second);
         
-        public abstract T Or(T first, T second);
+        public abstract T BitwiseOr(T first, T second);
 
-        public override object AndNot(object first, object second) => this.AndNot((T)first, (T)second);
+        public override object BitwiseAndNot(object first, object second) => this.BitwiseAndNot((T)first, (T)second);
         
-        public abstract T AndNot(T first, T second);
+        public abstract T BitwiseAndNot(T first, T second);
 
-        public override bool AndEquals(object first, object second) => this.AndEquals((T)first, (T)second);
+        public override bool BitwiseAndEquals(object first, object second) => this.BitwiseAndEquals((T)first, (T)second);
         
-        public abstract bool AndEquals(T first, T second);
+        public abstract bool BitwiseAndEquals(T first, T second);
     }
 }

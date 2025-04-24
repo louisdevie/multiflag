@@ -7,7 +7,6 @@
         <Title>Multiflag</Title>
         <Version>2.0.0</Version>
         <Authors>Louis DEVIE</Authors>
-        <Company/>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>flag:flagging;bitflag;enum;states;permissions;features;</PackageTags>
@@ -19,6 +18,10 @@
 
     <ItemGroup>
         <Folder Include="Properties\"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="Tests" />
     </ItemGroup>
 
     <ItemGroup>

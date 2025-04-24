@@ -13,11 +13,11 @@ namespace Multiflag
 
         public override bool IsEmpty(ulong flags) => U64BitManipulator.Current.IsZero(flags);
 
-        public override ulong Union(ulong first, ulong second) => U64BitManipulator.Current.Or(first, second);
+        public override ulong Union(ulong first, ulong second) => U64BitManipulator.Current.BitwiseOr(first, second);
 
-        public override ulong Difference(ulong first, ulong second) => U64BitManipulator.Current.AndNot(first, second);
+        public override ulong Difference(ulong first, ulong second) => U64BitManipulator.Current.BitwiseAndNot(first, second);
 
         public override bool IsSupersetOf(ulong first, ulong second) =>
-            U64BitManipulator.Current.AndEquals(first, second);
+            U64BitManipulator.Current.BitwiseAndEquals(first, second);
     }
 }

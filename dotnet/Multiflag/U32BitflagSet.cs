@@ -13,11 +13,11 @@ namespace Multiflag
 
         public override bool IsEmpty(uint flags) => U32BitManipulator.Current.IsZero(flags);
 
-        public override uint Union(uint first, uint second) => U32BitManipulator.Current.Or(first, second);
+        public override uint Union(uint first, uint second) => U32BitManipulator.Current.BitwiseOr(first, second);
 
-        public override uint Difference(uint first, uint second) => U32BitManipulator.Current.AndNot(first, second);
+        public override uint Difference(uint first, uint second) => U32BitManipulator.Current.BitwiseAndNot(first, second);
 
         public override bool IsSupersetOf(uint first, uint second) =>
-            U32BitManipulator.Current.AndEquals(first, second);
+            U32BitManipulator.Current.BitwiseAndEquals(first, second);
     }
 }

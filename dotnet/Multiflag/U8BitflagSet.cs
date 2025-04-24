@@ -13,10 +13,10 @@ namespace Multiflag
 
         public override bool IsEmpty(byte flags) => U8BitManipulator.Current.IsZero(flags);
 
-        public override byte Union(byte first, byte second) => U8BitManipulator.Current.Or(first, second);
+        public override byte Union(byte first, byte second) => U8BitManipulator.Current.BitwiseOr(first, second);
 
-        public override byte Difference(byte first, byte second) => U8BitManipulator.Current.AndNot(first, second);
+        public override byte Difference(byte first, byte second) => U8BitManipulator.Current.BitwiseAndNot(first, second);
 
-        public override bool IsSupersetOf(byte first, byte second) => U8BitManipulator.Current.AndEquals(first, second);
+        public override bool IsSupersetOf(byte first, byte second) => U8BitManipulator.Current.BitwiseAndEquals(first, second);
     }
 }

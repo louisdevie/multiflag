@@ -19,10 +19,10 @@ namespace Multiflag.Bitflags
 
         public override bool IsZero(BigInteger flags) => flags == 0;
 
-        public override BigInteger Or(BigInteger first, BigInteger second) => first | second;
+        public override BigInteger BitwiseOr(BigInteger first, BigInteger second) => first | second;
 
-        public override BigInteger AndNot(BigInteger first, BigInteger second) => first & ~second;
+        public override BigInteger BitwiseAndNot(BigInteger first, BigInteger second) => first & ~second;
 
-        public override bool AndEquals(BigInteger first, BigInteger second) => (first & second) == second;
+        public override bool BitwiseAndEquals(BigInteger first, BigInteger second) => (first & second) == second;
     }
 }

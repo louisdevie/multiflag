@@ -79,12 +79,12 @@ namespace Multiflag
         public override bool IsEmpty(T flags) => this.bitManipulator.IsZero(this.EnumToInt(flags));
 
         public override T Union(T first, T second) =>
-            this.IntToEnum(this.bitManipulator.Or(this.EnumToInt(first), this.EnumToInt(second)));
+            this.IntToEnum(this.bitManipulator.BitwiseOr(this.EnumToInt(first), this.EnumToInt(second)));
 
         public override T Difference(T first, T second) =>
-            this.IntToEnum(this.bitManipulator.AndNot(this.EnumToInt(first), this.EnumToInt(second)));
+            this.IntToEnum(this.bitManipulator.BitwiseAndNot(this.EnumToInt(first), this.EnumToInt(second)));
 
         public override bool IsSupersetOf(T first, T second) =>
-            this.bitManipulator.AndEquals(this.EnumToInt(first), this.EnumToInt(second));
+            this.bitManipulator.BitwiseAndEquals(this.EnumToInt(first), this.EnumToInt(second));
     }
 }
