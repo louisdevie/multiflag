@@ -26,27 +26,41 @@ namespace Multiflag
             return this.Flag(ImmutableHashSet.Create(value), parents);
         }
 
-        public override IImmutableSet<T> Empty()
+        /// <inheritdoc />
+        protected override sealed void CheckValue(IImmutableSet<T> value)
+        {
+            if (value.Count != 1)
+            {
+                throw new InvalidHashSetValueException();
+            }
+        }
+
+        /// <inheritdoc />
+        public override sealed IImmutableSet<T> Empty()
         {
             return ImmutableHashSet<T>.Empty;
         }
 
-        public override bool IsEmpty(IImmutableSet<T> flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(IImmutableSet<T> flags)
         {
             return flags.Count == 0;
         }
 
-        public override IImmutableSet<T> Union(IImmutableSet<T> first, IImmutableSet<T> second)
+        /// <inheritdoc />
+        public override sealed IImmutableSet<T> Union(IImmutableSet<T> first, IImmutableSet<T> second)
         {
             return first.Union(second);
         }
 
-        public override IImmutableSet<T> Difference(IImmutableSet<T> first, IImmutableSet<T> second)
+        /// <inheritdoc />
+        public override sealed IImmutableSet<T> Difference(IImmutableSet<T> first, IImmutableSet<T> second)
         {
             return first.Except(second);
         }
 
-        public override bool IsSupersetOf(IImmutableSet<T> first, IImmutableSet<T> second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(IImmutableSet<T> first, IImmutableSet<T> second)
         {
             return first.IsSupersetOf(second);
         }

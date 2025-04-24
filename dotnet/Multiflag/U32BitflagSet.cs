@@ -7,32 +7,38 @@ namespace Multiflag
     /// </summary>
     public class U32BitflagSet : FlagSet<uint>
     {
-        protected override void CheckValue(uint value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(uint value)
         {
             U32BitManipulator.Current.CheckPowerOfTwo(value);
         }
 
-        public override uint Empty()
+        /// <inheritdoc />
+        public override sealed uint Empty()
         {
             return U32BitManipulator.Current.Zero;
         }
 
-        public override bool IsEmpty(uint flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(uint flags)
         {
             return U32BitManipulator.Current.IsZero(flags);
         }
 
-        public override uint Union(uint first, uint second)
+        /// <inheritdoc />
+        public override sealed uint Union(uint first, uint second)
         {
             return U32BitManipulator.Current.BitwiseOr(first, second);
         }
 
-        public override uint Difference(uint first, uint second)
+        /// <inheritdoc />
+        public override sealed uint Difference(uint first, uint second)
         {
             return U32BitManipulator.Current.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(uint first, uint second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(uint first, uint second)
         {
             return U32BitManipulator.Current.BitwiseAndEquals(first, second);
         }

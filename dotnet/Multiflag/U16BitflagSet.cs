@@ -7,32 +7,38 @@ namespace Multiflag
     /// </summary>
     public class U16BitflagSet : FlagSet<ushort>
     {
-        protected override void CheckValue(ushort value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(ushort value)
         {
             U16BitManipulator.Current.CheckPowerOfTwo(value);
         }
 
-        public override ushort Empty()
+        /// <inheritdoc />
+        public override sealed ushort Empty()
         {
             return U16BitManipulator.Current.Zero;
         }
 
-        public override bool IsEmpty(ushort flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(ushort flags)
         {
             return U16BitManipulator.Current.IsZero(flags);
         }
 
-        public override ushort Union(ushort first, ushort second)
+        /// <inheritdoc />
+        public override sealed ushort Union(ushort first, ushort second)
         {
             return U16BitManipulator.Current.BitwiseOr(first, second);
         }
 
-        public override ushort Difference(ushort first, ushort second)
+        /// <inheritdoc />
+        public override sealed ushort Difference(ushort first, ushort second)
         {
             return U16BitManipulator.Current.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(ushort first, ushort second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(ushort first, ushort second)
         {
             return U16BitManipulator.Current.BitwiseAndEquals(first, second);
         }

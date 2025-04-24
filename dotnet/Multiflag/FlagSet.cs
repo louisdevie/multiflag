@@ -13,6 +13,9 @@ namespace Multiflag
     {
         private readonly Dictionary<T, Flag<T>> concreteFlags;
 
+        /// <summary>
+        ///     Creates a new empty flag set.
+        /// </summary>
         protected FlagSet()
         {
             this.concreteFlags = new Dictionary<T, Flag<T>>();

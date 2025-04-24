@@ -12,10 +12,11 @@ namespace Multiflag
     ///     Use <see cref="HashedFlagSet{T}" /> instead if you need the data to be
     ///     easily understandable by other systems.
     /// </summary>
-    public class Base64FlagSet : FlagSet<string>
+    public class Base64BitflagSet : FlagSet<string>
     {
         /// <summary>
-        ///     Creates a flag from an index (starting from 1).
+        ///     Creates a flag from an index.
+        ///     The value of the flag will be 2 to the power of <paramref name="index" />.
         /// </summary>
         /// <param name="index">The index of the flag. It must be greater than or equal to one.</param>
         /// <param name="parents">Other flags required for this flag to be set.</param>
@@ -36,7 +37,8 @@ namespace Multiflag
             return this.Flag(Base64Codec.EncodeSingleFlag(index), parents);
         }
 
-        protected override void CheckValue(string value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(string value)
         {
             if (!Base64Codec.DecodesToSingleFlag(value))
             {
@@ -44,27 +46,32 @@ namespace Multiflag
             }
         }
 
-        public override string Empty()
+        /// <inheritdoc />
+        public override sealed string Empty()
         {
             return Base64Codec.Zero;
         }
 
-        public override bool IsEmpty(string flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(string flags)
         {
             return Base64Codec.DecodesToZero(flags);
         }
 
-        public override string Union(string first, string second)
+        /// <inheritdoc />
+        public override sealed string Union(string first, string second)
         {
             return Base64Codec.BitwiseOr(first, second);
         }
 
-        public override string Difference(string first, string second)
+        /// <inheritdoc />
+        public override sealed string Difference(string first, string second)
         {
             return Base64Codec.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(string first, string second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(string first, string second)
         {
             return Base64Codec.BitwiseAndEquals(first, second);
         }

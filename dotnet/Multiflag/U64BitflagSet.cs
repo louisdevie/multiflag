@@ -7,32 +7,38 @@ namespace Multiflag
     /// </summary>
     public class U64BitflagSet : FlagSet<ulong>
     {
-        protected override void CheckValue(ulong value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(ulong value)
         {
             U64BitManipulator.Current.CheckPowerOfTwo(value);
         }
 
-        public override ulong Empty()
+        /// <inheritdoc />
+        public override sealed ulong Empty()
         {
             return U64BitManipulator.Current.Zero;
         }
 
-        public override bool IsEmpty(ulong flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(ulong flags)
         {
             return U64BitManipulator.Current.IsZero(flags);
         }
 
-        public override ulong Union(ulong first, ulong second)
+        /// <inheritdoc />
+        public override sealed ulong Union(ulong first, ulong second)
         {
             return U64BitManipulator.Current.BitwiseOr(first, second);
         }
 
-        public override ulong Difference(ulong first, ulong second)
+        /// <inheritdoc />
+        public override sealed ulong Difference(ulong first, ulong second)
         {
             return U64BitManipulator.Current.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(ulong first, ulong second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(ulong first, ulong second)
         {
             return U64BitManipulator.Current.BitwiseAndEquals(first, second);
         }

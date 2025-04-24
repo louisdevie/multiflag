@@ -7,32 +7,38 @@ namespace Multiflag
     /// </summary>
     public class U8BitflagSet : FlagSet<byte>
     {
-        protected override void CheckValue(byte value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(byte value)
         {
             U8BitManipulator.Current.CheckPowerOfTwo(value);
         }
 
-        public override byte Empty()
+        /// <inheritdoc />
+        public override sealed byte Empty()
         {
             return U8BitManipulator.Current.Zero;
         }
 
-        public override bool IsEmpty(byte flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(byte flags)
         {
             return U8BitManipulator.Current.IsZero(flags);
         }
 
-        public override byte Union(byte first, byte second)
+        /// <inheritdoc />
+        public override sealed byte Union(byte first, byte second)
         {
             return U8BitManipulator.Current.BitwiseOr(first, second);
         }
 
-        public override byte Difference(byte first, byte second)
+        /// <inheritdoc />
+        public override sealed byte Difference(byte first, byte second)
         {
             return U8BitManipulator.Current.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(byte first, byte second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(byte first, byte second)
         {
             return U8BitManipulator.Current.BitwiseAndEquals(first, second);
         }

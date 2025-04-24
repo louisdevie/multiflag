@@ -1,11 +1,11 @@
 namespace Multiflag.Tests;
 
-public class Base64FlagSetTests
+public class Base64BitflagSetTests
 {
     [Fact]
     public void CreateFromIndex()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
 
         var flag2 = flags.Flag(2);
         Assert.Equal("C", "" + flag2);
@@ -17,7 +17,7 @@ public class Base64FlagSetTests
     [Fact]
     public void CreateFromString()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
 
         Assert.Throws<InvalidBitflagValueException>(() => flags.Flag(""));
         Assert.Throws<InvalidBitflagValueException>(() => flags.Flag("A"));
@@ -32,7 +32,7 @@ public class Base64FlagSetTests
     [Fact]
     public void Add()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
         var flag2 = flags.Flag(2);
         var flag3 = flags.Flag(3);
         var flags2And3 = flags.Flag(flag2, flag3);
@@ -45,7 +45,7 @@ public class Base64FlagSetTests
     [Fact]
     public void Remove()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
         var flag1 = flags.Flag(1);
         var flag2 = flags.Flag(2);
         var flag3 = flags.Flag(3, flag1);
@@ -58,7 +58,7 @@ public class Base64FlagSetTests
     [Fact]
     public void IsIn()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
         var flag1 = flags.Flag(1);
         var flag2 = flags.Flag(2);
         var flag3 = flags.Flag(3, flag1);
@@ -72,7 +72,7 @@ public class Base64FlagSetTests
     [Fact]
     public void IsAbstract()
     {
-        var flags = new Base64FlagSet();
+        var flags = new Base64BitflagSet();
         var flag1 = flags.Flag(1);
         var flag2 = flags.Flag(2);
         var flags1And2 = flags.Flag(flag1, flag2);

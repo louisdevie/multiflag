@@ -8,32 +8,38 @@ namespace Multiflag
     /// </summary>
     public class DynamicBitflagSet : FlagSet<BigInteger>
     {
-        protected override void CheckValue(BigInteger value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(BigInteger value)
         {
             BigintBitManipulator.Current.CheckPowerOfTwo(value);
         }
 
-        public override BigInteger Empty()
+        /// <inheritdoc />
+        public override sealed BigInteger Empty()
         {
             return BigintBitManipulator.Current.Zero;
         }
 
-        public override bool IsEmpty(BigInteger flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(BigInteger flags)
         {
             return BigintBitManipulator.Current.IsZero(flags);
         }
 
-        public override BigInteger Union(BigInteger first, BigInteger second)
+        /// <inheritdoc />
+        public override sealed BigInteger Union(BigInteger first, BigInteger second)
         {
             return BigintBitManipulator.Current.BitwiseOr(first, second);
         }
 
-        public override BigInteger Difference(BigInteger first, BigInteger second)
+        /// <inheritdoc />
+        public override sealed BigInteger Difference(BigInteger first, BigInteger second)
         {
             return BigintBitManipulator.Current.BitwiseAndNot(first, second);
         }
 
-        public override bool IsSupersetOf(BigInteger first, BigInteger second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(BigInteger first, BigInteger second)
         {
             return BigintBitManipulator.Current.BitwiseAndEquals(first, second);
         }

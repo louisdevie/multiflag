@@ -13,6 +13,13 @@ namespace Multiflag
         private readonly Type enumType;
         private readonly Type underlyingType;
 
+        /// <summary>
+        ///     Creates a new empty flag set for a specific enum type.
+        /// </summary>
+        /// <exception cref="UnsupportedEnumTypeException">
+        ///     If <typeparamref name="T" /> is not backed by one of <see cref="byte" />,
+        ///     <see cref="ushort" />, <see cref="uint" /> or <see cref="ulong" />.
+        /// </exception>
         public EnumBitflagSet()
         {
             this.enumType = typeof(T);
@@ -70,7 +77,8 @@ namespace Multiflag
             return (T)Enum.ToObject(this.enumType, value);
         }
 
-        protected override void CheckValue(T value)
+        /// <inheritdoc />
+        protected override sealed void CheckValue(T value)
         {
             this.bitManipulator.CheckPowerOfTwo(this.EnumToInt(value));
 
@@ -80,27 +88,32 @@ namespace Multiflag
             }
         }
 
-        public override T Empty()
+        /// <inheritdoc />
+        public override sealed T Empty()
         {
             return this.IntToEnum(this.bitManipulator.ZeroObject);
         }
 
-        public override bool IsEmpty(T flags)
+        /// <inheritdoc />
+        public override sealed bool IsEmpty(T flags)
         {
             return this.bitManipulator.IsZero(this.EnumToInt(flags));
         }
 
-        public override T Union(T first, T second)
+        /// <inheritdoc />
+        public override sealed T Union(T first, T second)
         {
             return this.IntToEnum(this.bitManipulator.BitwiseOr(this.EnumToInt(first), this.EnumToInt(second)));
         }
 
-        public override T Difference(T first, T second)
+        /// <inheritdoc />
+        public override sealed T Difference(T first, T second)
         {
             return this.IntToEnum(this.bitManipulator.BitwiseAndNot(this.EnumToInt(first), this.EnumToInt(second)));
         }
 
-        public override bool IsSupersetOf(T first, T second)
+        /// <inheritdoc />
+        public override sealed bool IsSupersetOf(T first, T second)
         {
             return this.bitManipulator.BitwiseAndEquals(this.EnumToInt(first), this.EnumToInt(second));
         }
