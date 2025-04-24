@@ -21,7 +21,7 @@ A flag represent a distinct value in the set, and can require other "parent" fla
 value only when its parents are present too. When a flag is added, all of its parents are added with it, and when it is
 removed, all of its child flags are removed with it.
 
-Two kind of flags are supported out of the box : a bitflag implementation for unsigned integers and enums,
+Basic types are supported out of the box : a bitflag implementation for unsigned integers and enums,
 a hashset-based implementation and a bitflag implementation that works with base64 strings.
 This covers most of the common needs, but you can subclass `FlagSet` to work with any custom type you want.
 
