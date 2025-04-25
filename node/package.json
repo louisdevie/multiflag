@@ -21,6 +21,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "moduleNameMapper": {
+        "@module": "<rootDir>/src/index.ts"
+    },
     "collectCoverageFrom": ["src/**/*.ts"],
     "coverageReporters": [ ["cobertura", {"file": "coverage.xml"}] ]
   },
