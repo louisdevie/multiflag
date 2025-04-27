@@ -1,13 +1,26 @@
 import { Flag } from './flag'
 
+function assertIsFlag<T>(arg: unknown): Flag<T> {
+    if (arg instanceof Flag) {
+        return arg
+    } else {
+        throw new TypeError(
+            'Only the first argument to flag() may be a flag value, ' +
+                'other arguments must be instances of Flag.'
+        )
+    }
+}
+
 /**
  * Represent a group of flags, and provide methods to use T as a set. Built-in
- * implementations exist for `number`, `BigInt`, `Set` and `Array`.
+ * implementations exist for `number`, `bigint`, base-64 `string`, `Set`
+ * and `Array`.
  *
- * @typeParam T - The type to be used as a set of flags.
+ * @typeParam V - The type of values in the set.
+ * @typeParam S - The type to be used as a set of flags.
  */
-export abstract class FlagSet<T> {
-    private readonly concreteFlags: Map<T, Flag<T>>
+export abstract class FlagSet<V, S> {
+    private readonly concreteFlags: Map<V, Flag<S>>
 
     /**
      * Creates a new empty flag set.
@@ -26,8 +39,7 @@ export abstract class FlagSet<T> {
      * @throw {@link ForeignFlagError} if one of the parents doesn't belong to
      * the same {@link FlagSet}.
      */
-    public flag(...parents: Flag<T>[]): Flag<T>
-
+    public flag(...parents: Flag<S>[]): Flag<S>
     /**
      * Creates a flag with a value.
      *
@@ -42,44 +54,87 @@ export abstract class FlagSet<T> {
      * @throw {@link ReusedFlagValueError} if another flag has already been
      * created with the same value.
      */
-    public flag(value: T, ...parents: Flag<T>[]): Flag<T>
-    public flag(): Flag<T> {
-        throw new Error('not implemented')
-        /*{
-            return new Flag<T>(this, this.Empty(), parents);
+    public flag(value: V, ...parents: Flag<S>[]): Flag<S>
+    public flag(...args: (V | Flag<S>)[]): Flag<S> {
+        if (args.length === 0) {
+            return new Flag(this, this.empty(), [])
+        } else if (args[0] instanceof Flag) {
+            return new Flag(this, this.empty(), args.map(assertIsFlag<S>))
+        } else {
+            const value = args.shift() as V
+            const flag = new Flag(
+                this,
+                this.wrapValue(value),
+                args.map(assertIsFlag<S>)
+            )
+            this.concreteFlags.set(value, flag)
+            return flag
         }
-            this.CheckValue(value);
-
-            if (this.concreteFlags.ContainsKey(value))
-            {
-                throw new ReusedFlagValueException(value);
-            }
-
-            var flag = new Flag<T>(this, value, parents);
-            this.concreteFlags.Add(value, flag);
-            return flag;*/
     }
 
     /**
-     * This method will be called when a new flag is about to be created with
-     * that value. The default implementation does nothing, but it may be
-     * overridden to throw an exception on invalid values.
+     * Transforms a value into a set containing only that value.
+     * This method may throw an exception if the value is not valid.
      *
      * @param value - The value that will be used for the flag.
      */
-    protected checkValue(value: T): void {}
+    protected abstract wrapValue(value: V): S
+
+    /**
+     * Filters a flag set so that it only contains the flags that were declared
+     * with the {@link flag} method. If a flags is missing some of its parents,
+     * it will not be included in the result.
+     *
+     * @param flags The set of flags to filter.
+     *
+     * @returns A new set of flags.
+     *
+     * @see maximum
+     */
+    public minimum(flags: S): S {
+        let result = this.empty()
+        for (const value of this.iterate(flags)) {
+            const flag = this.concreteFlags.get(value)
+            if (flag !== undefined && flag.isIn(flags)) {
+                result = flag.addTo(result)
+            }
+        }
+        return result
+    }
+
+    /**
+     * Creates a copy of a flag set that will contain all the flags that were
+     * declared with the {@link flag} method. If a flags is missing some of its
+     * parents in the original set, they will be added to the result.
+     *
+     * @param flags The set of flags to filter.
+     *
+     * @returns A new set of flags.
+     *
+     * @see minimum
+     */
+    public maximum(flags: S): S {
+        let result = this.empty()
+        for (const value of this.iterate(flags)) {
+            const flag = this.concreteFlags.get(value)
+            if (flag !== undefined) {
+                result = flag.addTo(result)
+            }
+        }
+        return result
+    }
 
     /**
      * Creates an empty set of flags.
      */
-    public abstract empty(): T
+    public abstract empty(): S
 
     /**
      * Checks if a set of flags is the empty set.
      *
      * @param flags - The set of flags to test.
      */
-    public abstract isEmpty(flags: T): boolean
+    public abstract isEmpty(flags: S): boolean
 
     /**
      * Computes the union of two sets of flags.
@@ -89,7 +144,7 @@ export abstract class FlagSet<T> {
      *
      * @returns A new set that contains the flags of both sets.
      */
-    public abstract union(first: T, second: T): T
+    public abstract union(first: S, second: S): S
 
     /**
      * Computes the difference of two set of flags.
@@ -101,7 +156,7 @@ export abstract class FlagSet<T> {
      * @returns A new set that contains the flags of the first set that do not
      * appear in the second.
      */
-    public abstract difference(first: T, second: T): T
+    public abstract difference(first: S, second: S): S
 
     /**
      * Checks whether the first set of flags is a superset of the second.
@@ -109,5 +164,12 @@ export abstract class FlagSet<T> {
      * @param first - The first set of flags.
      * @param second - The second set of flags.
      */
-    public abstract isSupersetOf(first: T, second: T): boolean
+    public abstract isSupersetOf(first: S, second: S): boolean
+
+    /**
+     * Returns an iterable over the elements of a set.
+     *
+     * @param flags - A set of flags.
+     */
+    public abstract iterate(flags: S): Iterable<V>
 }

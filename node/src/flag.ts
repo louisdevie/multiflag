@@ -11,7 +11,7 @@ import { ForeignFlagError } from './errors'
 export class Flag<T> {
     private readonly children: Flag<T>[]
     private readonly parents: Flag<T>[]
-    private readonly set: FlagSet<T>
+    private readonly set: FlagSet<unknown, T>
     private readonly value: T
 
     /**
@@ -25,7 +25,7 @@ export class Flag<T> {
      *
      * @internal
      */
-    public constructor(set: FlagSet<T>, value: T, parents: Flag<T>[]) {
+    public constructor(set: FlagSet<unknown, T>, value: T, parents: Flag<T>[]) {
         this.set = set
         this.value = value
         this.parents = parents
@@ -47,7 +47,7 @@ export class Flag<T> {
         return this.set.isEmpty(this.value)
     }
 
-    private belongsTo(flagSet: FlagSet<T>): boolean {
+    private belongsTo(flagSet: FlagSet<unknown, T>): boolean {
         return this.set == flagSet
     }
 
