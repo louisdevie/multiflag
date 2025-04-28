@@ -1,6 +1,4 @@
 import { FlagSet } from './flagset'
-import { InvalidCollectionValueError } from './errors'
-import { Flag } from './flag'
 
 export class ArrayFlagSet<T> extends FlagSet<T, T[]> {
     protected override wrapValue(value: T): T[] {

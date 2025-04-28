@@ -1,5 +1,4 @@
 import { DynamicBitflagSet, InvalidBitflagValueError } from '@module'
-import * as assert from 'node:assert'
 
 const bigPowerOfTwo = 2n ** 100n
 

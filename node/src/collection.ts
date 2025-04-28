@@ -1,6 +1,4 @@
 import { FlagSet } from './flagset'
-import { InvalidCollectionValueError } from './errors'
-import { Flag } from './flag'
 
 function polyfillUnion(
     proto: object | undefined

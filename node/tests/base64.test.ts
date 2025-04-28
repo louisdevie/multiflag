@@ -1,4 +1,4 @@
-import { Base64BitflagSet, InvalidBitflagValueError } from '@module'
+import { Base64BitflagSet } from '@module'
 
 test('Create from an index', () => {
     const flags = new Base64BitflagSet()
