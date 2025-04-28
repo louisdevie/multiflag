@@ -8,7 +8,8 @@ const SIXTY_THREE = 95 // _
 
 const ZERO_STRING = 'A'
 
-function encodeByte(byte: number): string {
+/** @internal */
+export function encodeByte(byte: number): string {
     let charCode
     if (byte < 26) {
         charCode = byte + ZERO
@@ -22,7 +23,8 @@ function encodeByte(byte: number): string {
     return String.fromCharCode(charCode)
 }
 
-function decodeByte(encodedByte: string): number {
+/** @internal */
+export function decodeByte(encodedByte: string): number {
     const charCode = encodedByte.charCodeAt(0)
     if (charCode == SIXTY_THREE) {
         return 63
