@@ -1,4 +1,5 @@
 import { DynamicBitflagSet, InvalidBitflagValueError } from '@module'
+import * as assert from 'node:assert'
 
 const bigPowerOfTwo = 2n ** 100n
 
@@ -135,4 +136,18 @@ test('Is abstract', () => {
     expect(flag2.isAbstract).toBe(false)
     expect(flags1And2.isAbstract).toBe(true)
     expect(flag4.isAbstract).toBe(false)
+})
+
+test('Environment without bigint', async () => {
+    const originalBigInt = globalThis.BigInt
+    // @ts-ignore
+    delete globalThis.BigInt
+    let module: { DynamicBitflagSet: typeof DynamicBitflagSet }
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+
+    expect(() => new module.DynamicBitflagSet()).toThrow()
+
+    globalThis.BigInt = originalBigInt
 })
