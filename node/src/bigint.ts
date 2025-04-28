@@ -48,6 +48,10 @@ export class DynamicBitflagSet extends FlagSet<bigint, bigint> {
         return first | second
     }
 
+    public override intersection(first: bigint, second: bigint): bigint {
+        return first & second
+    }
+
     public override difference(first: bigint, second: bigint): bigint {
         return first & ~second
     }

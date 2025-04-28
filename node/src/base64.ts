@@ -101,6 +101,26 @@ export class Base64BitflagSet extends FlagSet<number, string> {
         return result
     }
 
+    public override intersection(first: string, second: string): string {
+        let result = ''
+
+        const shorterLength = Math.min(first.length, second.length)
+        let i = 0
+        // AND the bytes one by one
+        for (; i < shorterLength; i++) {
+            const value = decodeByte(first[i]) & decodeByte(second[i])
+            result += encodeByte(value)
+        }
+        // if one string is longer than the other, don't add anything else (x & 0 = 0)
+        // but make sure there is always one digit in the string
+        // empty strings are considered equal to zero, but we always try to normalise the output
+        if (i < 1) {
+            result += ZERO_STRING
+        }
+
+        return result
+    }
+
     public override difference(first: string, second: string): string {
         let result = ''
 

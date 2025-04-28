@@ -26,6 +26,31 @@ function polyfillUnion(
     }
 }
 
+function polyfillIntersection(
+    proto: object | undefined
+): <T>(a: Set<T>, b: Set<T>) => Set<T> {
+    if (proto && 'intersection' in proto) {
+        return function (a, b) {
+            return (proto.intersection as Function).call(a, b)
+        }
+    } else {
+        return function <T>(a: Set<T>, b: Set<T>) {
+            if (!(a instanceof Set) || !(b instanceof Set)) {
+                throw new TypeError('Arguments must be instances of Set')
+            }
+
+            const differenceSet = new Set<T>()
+            for (const item of a) {
+                if (b.has(item)) {
+                    differenceSet.add(item)
+                }
+            }
+
+            return differenceSet
+        }
+    }
+}
+
 function polyfillDifference(
     proto: object | undefined
 ): <T>(a: Set<T>, b: Set<T>) => Set<T> {
@@ -102,6 +127,8 @@ export class CollectionFlagSet<T> extends FlagSet<T, Set<T>> {
     }
 
     public override union = polyfillUnion(Set.prototype)
+
+    public override intersection = polyfillIntersection(Set.prototype)
 
     public override difference = polyfillDifference(Set.prototype)
 

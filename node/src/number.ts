@@ -21,6 +21,10 @@ export class NumberBitflagSet extends FlagSet<number, number> {
         return first | second
     }
 
+    public override intersection(first: number, second: number): number {
+        return first & second
+    }
+
     public override difference(first: number, second: number): number {
         return first & ~second
     }

@@ -16,6 +16,27 @@ test('Union of two numbers', () => {
     expect(flags.union(3, 6)).toEqual(7)
 })
 
+test('Difference of two numbers', () => {
+    const flags = new NumberBitflagSet()
+
+    expect(flags.difference(0, 0)).toEqual(0)
+    expect(flags.difference(1, 0)).toEqual(1)
+    expect(flags.difference(3, 6)).toEqual(1)
+    expect(flags.difference(6, 3)).toEqual(4)
+    expect(flags.difference(8, 17)).toEqual(8)
+})
+
+test('Intersection of two numbers', () => {
+    const flags = new NumberBitflagSet()
+
+    expect(flags.intersection(0, 0)).toEqual(0)
+    expect(flags.intersection(1, 0)).toEqual(0)
+    expect(flags.intersection(1, 2)).toEqual(0)
+    expect(flags.intersection(1, 3)).toEqual(1)
+    expect(flags.intersection(11, 5)).toEqual(1)
+    expect(flags.intersection(11, 7)).toEqual(3)
+})
+
 test('Iterate over a number', () => {
     const flags = new NumberBitflagSet()
 

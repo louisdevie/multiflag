@@ -147,6 +147,17 @@ export abstract class FlagSet<V, S> {
     public abstract union(first: S, second: S): S
 
     /**
+     * Computes the intersection of two set of flags.
+     *
+     * @param first - The first set of flags.
+     * @param second - The second set of flags.
+     *
+     * @returns A new set that contains the flags that appear both in the first
+     * set and the second set.
+     */
+    public abstract intersection(first: S, second: S): S
+
+    /**
      * Computes the difference of two set of flags.
      *
      * @param first - The first set of flags.

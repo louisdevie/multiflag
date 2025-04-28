@@ -30,6 +30,16 @@ export class ArrayFlagSet<T> extends FlagSet<T, T[]> {
         return unionArray
     }
 
+    public override intersection(first: T[], second: T[]): T[] {
+        const intersectionArray: T[] = []
+        for (const item of first) {
+            if (!intersectionArray.includes(item) && second.includes(item)) {
+                intersectionArray.push(item)
+            }
+        }
+        return intersectionArray
+    }
+
     public override difference(first: T[], second: T[]): T[] {
         const differenceArray: T[] = []
         for (const item of first) {
