@@ -1,4 +1,5 @@
 import { CollectionFlagSet } from '@module'
+import { ok } from 'node:assert'
 
 function set<T>(...values: T[]): Set<T> {
     return new Set<T>(values)
@@ -126,4 +127,114 @@ test('Is abstract', () => {
     expect(flagB.isAbstract).toBe(false)
     expect(flagsAAndB.isAbstract).toBe(true)
     expect(flagC.isAbstract).toBe(false)
+})
+
+test('Environment without Set', async () => {
+    const originalSet = globalThis.Set
+    // @ts-ignore
+    delete globalThis.Set
+    let module: { CollectionFlagSet: typeof CollectionFlagSet }
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+
+    expect(() => new module.CollectionFlagSet()).toThrow()
+
+    globalThis.Set = originalSet
+})
+
+test('Environment with Set.prototype.union', async () => {
+    ok(!('union' in globalThis.Set.prototype))
+
+    const mockUnion = jest.fn((_) => new Set())
+    // @ts-ignore
+    globalThis.Set.prototype.union = mockUnion
+    let module: { CollectionFlagSet: typeof CollectionFlagSet } | undefined
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+    ok(module !== undefined)
+
+    const set1 = new Set()
+    const set2 = new Set()
+    const flags = new module.CollectionFlagSet()
+    flags.union(set1, set2)
+    expect(mockUnion).toHaveBeenCalledTimes(1)
+    expect(mockUnion.mock.contexts[0]).toBe(set1)
+    expect(mockUnion.mock.calls[0][0]).toBe(set2)
+
+    // @ts-ignore
+    delete globalThis.Set.prototype.union
+})
+
+test('Environment with Set.prototype.difference', async () => {
+    ok(!('difference' in globalThis.Set.prototype))
+
+    const mockDifference = jest.fn((_) => new Set())
+    // @ts-ignore
+    globalThis.Set.prototype.difference = mockDifference
+    let module: { CollectionFlagSet: typeof CollectionFlagSet } | undefined
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+    ok(module !== undefined)
+
+    const set1 = new Set()
+    const set2 = new Set()
+    const flags = new module.CollectionFlagSet()
+    flags.difference(set1, set2)
+    expect(mockDifference).toHaveBeenCalledTimes(1)
+    expect(mockDifference.mock.contexts[0]).toBe(set1)
+    expect(mockDifference.mock.calls[0][0]).toBe(set2)
+
+    // @ts-ignore
+    delete globalThis.Set.prototype.difference
+})
+
+test('Environment with Set.prototype.intersection', async () => {
+    ok(!('intersection' in globalThis.Set.prototype))
+
+    const mockIntersection = jest.fn((_) => new Set())
+    // @ts-ignore
+    globalThis.Set.prototype.intersection = mockIntersection
+    let module: { CollectionFlagSet: typeof CollectionFlagSet } | undefined
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+    ok(module !== undefined)
+
+    const set1 = new Set()
+    const set2 = new Set()
+    const flags = new module.CollectionFlagSet()
+    flags.intersection(set1, set2)
+    expect(mockIntersection).toHaveBeenCalledTimes(1)
+    expect(mockIntersection.mock.contexts[0]).toBe(set1)
+    expect(mockIntersection.mock.calls[0][0]).toBe(set2)
+
+    // @ts-ignore
+    delete globalThis.Set.prototype.intersection
+})
+
+test('Environment with Set.prototype.isSupersetOf', async () => {
+    ok(!('isSupersetOf' in globalThis.Set.prototype))
+
+    const mockIsSupersetOf = jest.fn((_) => new Set())
+    // @ts-ignore
+    globalThis.Set.prototype.isSupersetOf = mockIsSupersetOf
+    let module: { CollectionFlagSet: typeof CollectionFlagSet } | undefined
+    await jest.isolateModulesAsync(async () => {
+        module = await import('@module')
+    })
+    ok(module !== undefined)
+
+    const set1 = new Set()
+    const set2 = new Set()
+    const flags = new module.CollectionFlagSet()
+    flags.isSupersetOf(set1, set2)
+    expect(mockIsSupersetOf).toHaveBeenCalledTimes(1)
+    expect(mockIsSupersetOf.mock.contexts[0]).toBe(set1)
+    expect(mockIsSupersetOf.mock.calls[0][0]).toBe(set2)
+
+    // @ts-ignore
+    delete globalThis.Set.prototype.isSupersetOf
 })
