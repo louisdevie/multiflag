@@ -122,10 +122,6 @@ export class CollectionFlagSet<T> extends FlagSet<T, Set<T>> {
         return new Set()
     }
 
-    public override isEmpty(flags: Set<T>): boolean {
-        return flags.size === 0
-    }
-
     public override union = polyfillUnion(Set.prototype)
 
     public override intersection = polyfillIntersection(Set.prototype)

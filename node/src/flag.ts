@@ -9,15 +9,13 @@ import { ForeignFlagError } from './errors'
  * @typeParam T - The type of value the flag can be stored in
  */
 export class Flag<T> {
-    private readonly children: Flag<T>[]
-    private readonly parents: Flag<T>[]
-    private readonly set: FlagSet<unknown, T>
-    private readonly value: T
+    private readonly _children: Flag<T>[]
+    private readonly _parents: Flag<T>[]
+    private readonly _set: FlagSet<unknown, T>
 
     /**
      * Creates a new flag.
      * @param set - The set this flag belongs to.</param>
-     * @param value - The value of the flag.</param>
      * @param parents - The parent flags.</param>
      *
      * @throws {@link ForeignFlagError} if one of the parents doesn't belong
@@ -25,31 +23,32 @@ export class Flag<T> {
      *
      * @internal
      */
-    public constructor(set: FlagSet<unknown, T>, value: T, parents: Flag<T>[]) {
-        this.set = set
-        this.value = value
-        this.parents = parents
-        this.children = []
+    public constructor(set: FlagSet<unknown, T>, parents: Flag<T>[]) {
+        this._set = set
+        this._parents = parents
+        this._children = []
 
-        for (const parent of this.parents) {
-            if (!parent.belongsTo(this.set)) {
+        for (const parent of this._parents) {
+            if (!parent.belongsTo(this._set)) {
                 throw new ForeignFlagError()
             }
 
-            parent.children.push(this)
+            parent._children.push(this)
         }
+    }
+
+    private belongsTo(flagSet: FlagSet<unknown, T>): boolean {
+        return this._set == flagSet
+    }
+
+    protected get set(): FlagSet<unknown, T> {
+        return this._set
     }
 
     /**
      * `true` when this flag has no value on its own.
      */
-    public get isAbstract(): boolean {
-        return this.set.isEmpty(this.value)
-    }
-
-    private belongsTo(flagSet: FlagSet<unknown, T>): boolean {
-        return this.set == flagSet
-    }
+    public readonly isAbstract: boolean = true
 
     /**
      * Add a flag if it is not already present.
@@ -59,9 +58,9 @@ export class Flag<T> {
      * @returns A copy of the flags with this flag added.
      */
     public addTo(flags: T): T {
-        return this.parents.reduce(
+        return this._parents.reduce(
             (current, parent) => parent.addTo(current),
-            this.set.union(flags, this.value)
+            flags
         )
     }
 
@@ -73,9 +72,9 @@ export class Flag<T> {
      * @returns A copy of the flags with this flag removed.
      */
     public removeFrom(flags: T): T {
-        return this.children.reduce(
+        return this._children.reduce(
             (current, child) => child.removeFrom(current),
-            this.set.difference(flags, this.value)
+            flags
         )
     }
 
@@ -88,9 +87,41 @@ export class Flag<T> {
      * otherwise `false`.
      */
     public isIn(flags: T): boolean {
-        return (
-            this.set.isSupersetOf(flags, this.value) &&
-            this.parents.every((parent) => parent.isIn(flags))
-        )
+        return this._parents.every((parent) => parent.isIn(flags))
+    }
+}
+
+/** @intenal */
+export class ValueFlag<T> extends Flag<T> {
+    private readonly _value: T
+
+    /**
+     * Creates a new flag with a value.
+     * @param set - The set this flag belongs to.</param>
+     * @param value - The value of the flag.</param>
+     * @param parents - The parent flags.</param>
+     *
+     * @throws {@link ForeignFlagError} if one of the parents doesn't belong
+     * to the same {@link FlagSet}.
+     *
+     * @internal
+     */
+    public constructor(set: FlagSet<unknown, T>, value: T, parents: Flag<T>[]) {
+        super(set, parents)
+        this._value = value
+    }
+
+    public override readonly isAbstract = false
+
+    public override addTo(flags: T): T {
+        return super.addTo(this.set.union(flags, this._value))
+    }
+
+    public override removeFrom(flags: T): T {
+        return super.removeFrom(this.set.difference(flags, this._value))
+    }
+
+    public override isIn(flags: T): boolean {
+        return this.set.isSupersetOf(flags, this._value) && super.isIn(flags)
     }
 }

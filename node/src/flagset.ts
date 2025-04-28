@@ -1,4 +1,4 @@
-import { Flag } from './flag'
+import { Flag, ValueFlag } from './flag'
 
 function assertIsFlag<T>(arg: unknown): Flag<T> {
     if (arg instanceof Flag) {
@@ -20,13 +20,13 @@ function assertIsFlag<T>(arg: unknown): Flag<T> {
  * @typeParam S - The type to be used as a set of flags.
  */
 export abstract class FlagSet<V, S> {
-    private readonly concreteFlags: Map<V, Flag<S>>
+    private readonly _valueFlags: Map<V, ValueFlag<S>>
 
     /**
      * Creates a new empty flag set.
      */
     public constructor() {
-        this.concreteFlags = new Map()
+        this._valueFlags = new Map()
     }
 
     /**
@@ -57,17 +57,17 @@ export abstract class FlagSet<V, S> {
     public flag(value: V, ...parents: Flag<S>[]): Flag<S>
     public flag(...args: (V | Flag<S>)[]): Flag<S> {
         if (args.length === 0) {
-            return new Flag(this, this.empty(), [])
+            return new Flag(this, [])
         } else if (args[0] instanceof Flag) {
-            return new Flag(this, this.empty(), args.map(assertIsFlag<S>))
+            return new Flag(this, args.map(assertIsFlag<S>))
         } else {
             const value = args.shift() as V
-            const flag = new Flag(
+            const flag = new ValueFlag(
                 this,
                 this.wrapValue(value),
                 args.map(assertIsFlag<S>)
             )
-            this.concreteFlags.set(value, flag)
+            this._valueFlags.set(value, flag)
             return flag
         }
     }
@@ -94,7 +94,7 @@ export abstract class FlagSet<V, S> {
     public minimum(flags: S): S {
         let result = this.empty()
         for (const value of this.iterate(flags)) {
-            const flag = this.concreteFlags.get(value)
+            const flag = this._valueFlags.get(value)
             if (flag !== undefined && flag.isIn(flags)) {
                 result = flag.addTo(result)
             }
@@ -116,7 +116,7 @@ export abstract class FlagSet<V, S> {
     public maximum(flags: S): S {
         let result = this.empty()
         for (const value of this.iterate(flags)) {
-            const flag = this.concreteFlags.get(value)
+            const flag = this._valueFlags.get(value)
             if (flag !== undefined) {
                 result = flag.addTo(result)
             }
@@ -128,13 +128,6 @@ export abstract class FlagSet<V, S> {
      * Creates an empty set of flags.
      */
     public abstract empty(): S
-
-    /**
-     * Checks if a set of flags is the empty set.
-     *
-     * @param flags - The set of flags to test.
-     */
-    public abstract isEmpty(flags: S): boolean
 
     /**
      * Computes the union of two sets of flags.

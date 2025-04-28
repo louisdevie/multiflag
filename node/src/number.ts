@@ -13,10 +13,6 @@ export class NumberBitflagSet extends FlagSet<number, number> {
         return 0
     }
 
-    public override isEmpty(flags: number): boolean {
-        return flags === 0
-    }
-
     public override union(first: number, second: number): number {
         return first | second
     }
@@ -39,12 +35,12 @@ export class NumberBitflagSet extends FlagSet<number, number> {
 }
 
 class NumberBitflagIterator implements IterableIterator<number> {
-    private value: number
-    private current: number
+    private _value: number
+    private _current: number
 
     public constructor(value: number) {
-        this.value = value
-        this.current = 1
+        this._value = value
+        this._current = 1
     }
 
     public [Symbol.iterator](): IterableIterator<number> {
@@ -52,18 +48,18 @@ class NumberBitflagIterator implements IterableIterator<number> {
     }
 
     public next(): IteratorResult<number, undefined> {
-        if (this.value == 0) {
+        if (this._value == 0) {
             return { done: true, value: undefined }
         }
 
-        while ((this.value & 1) == 0) {
-            this.value >>= 1
-            this.current <<= 1
+        while ((this._value & 1) == 0) {
+            this._value >>= 1
+            this._current <<= 1
         }
 
-        const result = this.current
-        this.value >>= 1
-        this.current <<= 1
+        const result = this._current
+        this._value >>= 1
+        this._current <<= 1
 
         return { done: false, value: result }
     }

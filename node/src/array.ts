@@ -11,10 +11,6 @@ export class ArrayFlagSet<T> extends FlagSet<T, T[]> {
         return []
     }
 
-    public override isEmpty(flags: T[]): boolean {
-        return flags.length === 0
-    }
-
     public override union(first: T[], second: T[]): T[] {
         const unionArray: T[] = []
         for (const item of first) {

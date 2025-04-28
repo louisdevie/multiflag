@@ -40,10 +40,6 @@ export class DynamicBitflagSet extends FlagSet<bigint, bigint> {
         return __BI.ZERO
     }
 
-    public override isEmpty(flags: bigint): boolean {
-        return flags == __BI.ZERO
-    }
-
     public override union(first: bigint, second: bigint): bigint {
         return first | second
     }
