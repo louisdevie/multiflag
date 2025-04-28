@@ -10,7 +10,6 @@ function polyfillUnion(
             return (proto.union as Function).call(a, b)
         }
     } else {
-        console.log('no union')
         return function <T>(a: Set<T>, b: Set<T>) {
             if (!(a instanceof Set) || !(b instanceof Set)) {
                 throw new TypeError('Arguments must be instances of Set')
