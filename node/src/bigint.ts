@@ -57,6 +57,37 @@ export class DynamicBitflagSet extends FlagSet<bigint, bigint> {
     }
 
     public override iterate(flags: bigint): Iterable<bigint> {
-        throw new Error('not implemented')
+        return new DynamicBitflagIterator(flags)
+    }
+}
+
+class DynamicBitflagIterator implements IterableIterator<bigint> {
+    private _value: bigint
+    private _current: bigint
+
+    public constructor(value: bigint) {
+        this._value = value
+        this._current = __BI.ONE
+    }
+
+    public [Symbol.iterator](): IterableIterator<bigint> {
+        return this
+    }
+
+    public next(): IteratorResult<bigint, undefined> {
+        if (this._value == __BI.ZERO) {
+            return { done: true, value: undefined }
+        }
+
+        while ((this._value & __BI.ONE) == __BI.ZERO) {
+            this._value >>= __BI.ONE
+            this._current <<= __BI.ONE
+        }
+
+        const result = this._current
+        this._value >>= __BI.ONE
+        this._current <<= __BI.ONE
+
+        return { done: false, value: result }
     }
 }
