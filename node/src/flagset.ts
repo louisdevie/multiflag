@@ -56,19 +56,20 @@ export abstract class FlagSet<V, S> {
      */
     public flag(value: V, ...parents: Flag<S>[]): Flag<S>
     public flag(...args: (V | Flag<S>)[]): Flag<S> {
-        if (args.length === 0) {
-            return new Flag(this, [])
-        } else if (args[0] instanceof Flag) {
-            return new Flag(this, args.map(assertIsFlag<S>))
-        } else {
+        if (args.length > 0 && !(args[0] instanceof Flag)) {
             const value = args.shift() as V
-            const flag = new ValueFlag(
-                this,
-                this.wrapValue(value),
-                args.map(assertIsFlag<S>)
-            )
+            const parents = new Set(args.map(assertIsFlag<S>))
+            const flag = new ValueFlag(this, parents, this.wrapValue(value))
             this._valueFlags.set(value, flag)
             return flag
+        } else {
+            const parents = new Set(args.map(assertIsFlag<S>))
+            if (parents.size < 2) {
+                throw new TypeError(
+                    'A flag without value must have at least two parents.'
+                )
+            }
+            return new Flag(this, parents)
         }
     }
 

@@ -9,8 +9,8 @@ import { ForeignFlagError } from './errors'
  * @typeParam T - The type of value the flag can be stored in
  */
 export class Flag<T> {
-    private readonly _children: Flag<T>[]
-    private readonly _parents: Flag<T>[]
+    private readonly _children: Set<Flag<T>>
+    private readonly _parents: Set<Flag<T>>
     private readonly _set: FlagSet<unknown, T>
 
     /**
@@ -23,17 +23,17 @@ export class Flag<T> {
      *
      * @internal
      */
-    public constructor(set: FlagSet<unknown, T>, parents: Flag<T>[]) {
+    public constructor(set: FlagSet<unknown, T>, parents: Set<Flag<T>>) {
         this._set = set
         this._parents = parents
-        this._children = []
+        this._children = new Set()
 
         for (const parent of this._parents) {
             if (!parent.belongsTo(this._set)) {
                 throw new ForeignFlagError()
             }
 
-            parent._children.push(this)
+            parent._children.add(this)
         }
     }
 
@@ -58,10 +58,10 @@ export class Flag<T> {
      * @returns A copy of the flags with this flag added.
      */
     public addTo(flags: T): T {
-        return this._parents.reduce(
-            (current, parent) => parent.addTo(current),
-            flags
-        )
+        for (const parent of this._parents) {
+            flags = parent.addTo(flags)
+        }
+        return flags
     }
 
     /**
@@ -72,10 +72,10 @@ export class Flag<T> {
      * @returns A copy of the flags with this flag removed.
      */
     public removeFrom(flags: T): T {
-        return this._children.reduce(
-            (current, child) => child.removeFrom(current),
-            flags
-        )
+        for (const child of this._children) {
+            flags = child.removeFrom(flags)
+        }
+        return flags
     }
 
     /**
@@ -87,7 +87,12 @@ export class Flag<T> {
      * otherwise `false`.
      */
     public isIn(flags: T): boolean {
-        return this._parents.every((parent) => parent.isIn(flags))
+        for (const parent of this._parents) {
+            if (!parent.isIn(flags)) {
+                return false
+            }
+        }
+        return true
     }
 }
 
@@ -106,7 +111,11 @@ export class ValueFlag<T> extends Flag<T> {
      *
      * @internal
      */
-    public constructor(set: FlagSet<unknown, T>, value: T, parents: Flag<T>[]) {
+    public constructor(
+        set: FlagSet<unknown, T>,
+        parents: Set<Flag<T>>,
+        value: T
+    ) {
         super(set, parents)
         this._value = value
     }
