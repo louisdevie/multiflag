@@ -1,3 +1,4 @@
+import { ReusedFlagValueError } from './errors'
 import { Flag, ValueFlag } from './flag'
 
 function assertIsFlag<T>(arg: unknown): Flag<T> {
@@ -57,18 +58,26 @@ export abstract class FlagSet<V, S> {
     public flag(value: V, ...parents: Flag<S>[]): Flag<S>
     public flag(...args: (V | Flag<S>)[]): Flag<S> {
         if (args.length > 0 && !(args[0] instanceof Flag)) {
+            // create a flag with a value
             const value = args.shift() as V
+            if (this._valueFlags.has(value)) {
+                throw new ReusedFlagValueError(value)
+            }
+
             const parents = new Set(args.map(assertIsFlag<S>))
             const flag = new ValueFlag(this, parents, this.wrapValue(value))
+
             this._valueFlags.set(value, flag)
             return flag
         } else {
+            // create a flag without a value
             const parents = new Set(args.map(assertIsFlag<S>))
             if (parents.size < 2) {
                 throw new TypeError(
                     'A flag without value must have at least two parents.'
                 )
             }
+
             return new Flag(this, parents)
         }
     }

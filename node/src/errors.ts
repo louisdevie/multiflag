@@ -23,17 +23,6 @@ export class InvalidBitflagValueError extends Error {
 }
 
 /**
- * Error thrown by `FlagSet`s that store the flags using collections when a flag
- * value does not contain exactly one element.
- */
-export class InvalidCollectionValueError extends Error {
-    /** @internal */
-    public constructor() {
-        super('Flag values for collections must contain exactly one value.')
-    }
-}
-
-/**
  * Error thrown if the {@link FlagSet.flag} method is called with a value that
  * was already used for another flag in the same `FlagSet`.
  */

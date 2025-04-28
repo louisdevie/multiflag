@@ -1,4 +1,5 @@
 import { NumberBitflagSet } from '@module'
+import { ReusedFlagValueError } from '../src/errors'
 
 test('cannot create an abstract flag with less than two parents', () => {
     const flags = new NumberBitflagSet()
@@ -16,4 +17,10 @@ test('calls to flag() with arguments in the wrong order throw a TypeError', () =
 
     // @ts-ignore
     expect(() => flags.flag(flag1, 2, flag2)).toThrow(TypeError)
+})
+
+test('Use same value twice', () => {
+    const flags = new NumberBitflagSet()
+    const flag = flags.flag(1)
+    expect(() => flags.flag(1)).toThrow(ReusedFlagValueError)
 })
