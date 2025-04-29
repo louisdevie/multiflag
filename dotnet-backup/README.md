@@ -1,2 +1,0 @@
-# Multiflag for .NET
-
