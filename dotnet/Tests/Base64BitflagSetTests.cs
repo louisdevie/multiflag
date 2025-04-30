@@ -3,7 +3,7 @@ namespace Multiflag.Tests;
 public class Base64BitflagSetTests
 {
     [Fact]
-    public void CreateFromIndex()
+    public void Create()
     {
         var flags = new Base64BitflagSet();
 
@@ -13,20 +13,93 @@ public class Base64BitflagSetTests
         Assert.Throws<ArgumentOutOfRangeException>(() => flags.Flag(0));
         Assert.Throws<ArgumentOutOfRangeException>(() => flags.Flag(-2));
     }
+    
+    [Fact]
+    public void Union() {
+        var flags = new Base64BitflagSet();
+
+        Assert.Equal("A", flags.Union("", ""));
+        Assert.Equal("A", flags.Union("A", "A"));
+        Assert.Equal("B", flags.Union("B", "A"));
+        Assert.Equal("C", flags.Union("A", "C"));
+        Assert.Equal("D", flags.Union("B", "C"));
+        Assert.Equal("H", flags.Union("D", "G"));
+    }
 
     [Fact]
-    public void CreateFromString()
+    public void Difference()
     {
         var flags = new Base64BitflagSet();
 
-        Assert.Throws<InvalidBitflagValueException>(() => flags.Flag(""));
-        Assert.Throws<InvalidBitflagValueException>(() => flags.Flag("A"));
-        flags.Flag("B");
-        flags.Flag("C");
-        Assert.Throws<InvalidBitflagValueException>(() => flags.Flag("D"));
-        flags.Flag("E");
-        flags.Flag("EAA");
-        Assert.Throws<InvalidBitflagValueException>(() => flags.Flag("AAD"));
+        Assert.Equal("A", flags.Difference("", ""));
+        Assert.Equal("A", flags.Difference("A", "A"));
+        Assert.Equal("B", flags.Difference("B", "A"));
+        Assert.Equal("B", flags.Difference("D", "G"));
+        Assert.Equal("E", flags.Difference("G", "D"));
+        Assert.Equal("IB", flags.Difference("IB", "R"));
+    }
+
+    [Fact]
+    public void Intersection()
+    {
+        var flags = new Base64BitflagSet();
+
+        Assert.Equal("A", flags.Intersection("", ""));
+        Assert.Equal("A", flags.Intersection("A", "A"));
+        Assert.Equal("A", flags.Intersection("B", "A"));
+        Assert.Equal("A", flags.Intersection("B", "C"));
+        Assert.Equal("B", flags.Intersection("B", "D"));
+        Assert.Equal("B", flags.Intersection("L", "F"));
+        Assert.Equal("D", flags.Intersection("L", "H"));
+    }
+
+    [Fact]
+    public void Iterate()
+    {
+        var flags = new Base64BitflagSet();
+
+        Assert.Equal([], flags.Iterate("A"));
+        Assert.Equal([1], flags.Iterate("B"));
+        Assert.Equal([2], flags.Iterate("C"));
+        Assert.Equal([1, 2], flags.Iterate("D"));
+        Assert.Equal([1, 2, 4], flags.Iterate("L"));
+        Assert.Equal([3, 6, 7], flags.Iterate("kB"));
+    }
+
+    [Fact]
+    public void Minimum()
+    {
+        var flags = new Base64BitflagSet();
+        var flag1 = flags.Flag(1);
+        var flag2 = flags.Flag(2, flag1);
+        var flag3 = flags.Flag(3, flag1);
+        var flag4 = flags.Flag(4, flag3);
+
+        Assert.Equal("A", flags.Minimum("A"));
+        Assert.Equal("B", flags.Minimum("B"));
+        Assert.Equal("A", flags.Minimum("C"));
+        Assert.Equal("D", flags.Minimum("D"));
+        Assert.Equal("D", flags.Minimum("L"));
+        Assert.Equal("N", flags.Minimum("N"));
+        Assert.Equal("B", flags.Minimum("R"));
+    }
+
+    [Fact]
+    public void Maximum()
+    {
+        var flags = new Base64BitflagSet();
+        var flag1 = flags.Flag(1);
+        var flag2 = flags.Flag(2, flag1);
+        var flag3 = flags.Flag(3, flag1);
+        var flag4 = flags.Flag(4, flag3);
+
+        Assert.Equal("A", flags.Maximum("A"));
+        Assert.Equal("B", flags.Maximum("B"));
+        Assert.Equal("D", flags.Maximum("C"));
+        Assert.Equal("D", flags.Maximum("D"));
+        Assert.Equal("P", flags.Maximum("L"));
+        Assert.Equal("N", flags.Maximum("N"));
+        Assert.Equal("B", flags.Maximum("R"));
     }
 
     [Fact]

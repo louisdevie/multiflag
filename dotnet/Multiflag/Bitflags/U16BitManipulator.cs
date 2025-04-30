@@ -12,19 +12,35 @@ namespace Multiflag.Bitflags
 
         public override ushort Zero => 0;
 
+        public override ushort One => 1;
+
+        public override bool IsZero(ushort value) => value == 0;
+
+        public override bool IsEven(ushort value) => (value & 1) == 0;
+
         protected override bool IsPowerOfTwo(ushort value)
         {
             return value != 0 && (value & value - 1) == 0;
         }
-
-        public override bool IsZero(ushort flags)
+        
+        public override ushort ShiftLeft(ushort value)
         {
-            return flags == 0;
+            return (ushort)(value << 1);
+        }
+
+        public override ushort ShiftRight(ushort value)
+        {
+            return (ushort)(value >> 1);
         }
 
         public override ushort BitwiseOr(ushort first, ushort second)
         {
             return (ushort)(first | second);
+        }
+
+        public override ushort BitwiseAnd(ushort first, ushort second)
+        {
+            return (ushort)(first & second);
         }
 
         public override ushort BitwiseAndNot(ushort first, ushort second)

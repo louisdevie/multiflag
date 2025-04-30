@@ -1,42 +1,33 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Multiflag
 {
     /// <summary>
     ///     A <see cref="Flag{T}" /> represents some element of
-    ///     <typeparamref name="T" /> that can be added or removed from the set.
+    ///     <typeparamref name="TSet" /> that can be added or removed from the set.
     ///     When a flag is added to the set, all of its parents are added along
     ///     with it, and when it is removed all of its children are removed too.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class Flag<T>
-    where T : notnull
+    /// <typeparam name="TSet"></typeparam>
+    public class Flag<TSet>
     {
-        private readonly List<Flag<T>> children;
-        private readonly List<Flag<T>> parents;
-        private readonly FlagSet<T> set;
-        private readonly T value;
+        private readonly ISetOperations<TSet> operations;
+        private readonly List<Flag<TSet>> parents;
+        private readonly List<Flag<TSet>> children;
 
         /// <summary>
         ///     Creates a new flag.
         /// </summary>
-        /// <param name="set">The set this flag belongs to.</param>
-        /// <param name="value">The value of the flag.</param>
-        /// <param name="parents">The parent flags.</param>
-        /// <exception cref="ForeignFlagException">
-        ///     If one of the parents doesn't belong to the same <see cref="FlagSet{T}" />.
-        /// </exception>
-        internal Flag(FlagSet<T> set, T value, IEnumerable<Flag<T>> parents)
+        internal Flag(ISetOperations<TSet> operations, IEnumerable<Flag<TSet>> parents)
         {
-            this.set = set;
-            this.value = value;
+            this.operations = operations;
             this.parents = parents.ToList();
-            this.children = new List<Flag<T>>();
+            this.children = new List<Flag<TSet>>();
 
             foreach (var parent in this.parents)
             {
-                if (!parent.BelongsTo(this.set))
+                if (!parent.BelongsTo(this.operations))
                 {
                     throw new ForeignFlagException();
                 }
@@ -44,37 +35,36 @@ namespace Multiflag
                 parent.children.Add(this);
             }
         }
+        
+        internal ISetOperations<TSet> Operations => this.operations;
 
         /// <summary>
         ///     <see langword="true" /> when this flag has no value on its own.
         /// </summary>
-        public bool IsAbstract => this.set.IsEmpty(this.value);
+        public virtual bool IsAbstract => true;
 
-        private bool BelongsTo(FlagSet<T> flagSet)
+        private bool BelongsTo(ISetOperations<TSet> flagSet)
         {
-            return this.set == flagSet;
+            return this.operations == flagSet;
         }
 
         /// <summary>
         ///     Add a flag if it is not already present.
         /// </summary>
         /// <param name="flags">The flags to add it to.</param>
-        /// <returns>The modified flags.</returns>
-        /// <remarks>
-        ///     If <typeparamref name="T" /> is reference type, the flags passed to the function may be modified in-place.
-        /// </remarks>
-        public T AddTo(T flags)
+        /// <returns>A copy of the flags with this flag added.</returns>
+        public virtual TSet AddTo(TSet flags)
         {
             return this.parents.Aggregate(
-                this.set.Union(flags, this.value),
+                flags,
                 (current, parent) => parent.AddTo(current)
             );
         }
 
         /// <summary>
-        ///     See <see cref="AddTo(T)" />.
+        ///     See <see cref="AddTo(TSet)" />.
         /// </summary>
-        public static T operator +(T value, Flag<T> flag)
+        public static TSet operator +(TSet value, Flag<TSet> flag)
         {
             return flag.AddTo(value);
         }
@@ -85,20 +75,20 @@ namespace Multiflag
         /// <param name="flags">The flags to remove it from.</param>
         /// <returns>The modified flags.</returns>
         /// <remarks>
-        ///     If <typeparamref name="T" /> is reference type, the flags passed to the function may be modified in-place.
+        ///     If <typeparamref name="TSet" /> is reference type, the flags passed to the function may be modified in-place.
         /// </remarks>
-        public T RemoveFrom(T flags)
+        public virtual TSet RemoveFrom(TSet flags)
         {
             return this.children.Aggregate(
-                this.set.Difference(flags, this.value),
+                flags,
                 (current, child) => child.RemoveFrom(current)
             );
         }
 
         /// <summary>
-        ///     See <see cref="RemoveFrom(T)" />
+        ///     See <see cref="RemoveFrom(TSet)" />
         /// </summary>
-        public static T operator -(T value, Flag<T> flag)
+        public static TSet operator -(TSet value, Flag<TSet> flag)
         {
             return flag.RemoveFrom(value);
         }
@@ -111,10 +101,9 @@ namespace Multiflag
         ///     <see langword="true" /> if this flag belongs to the set of
         ///     <paramref name="flags" />, otherwise <see langword="false" />.
         /// </returns>
-        public bool IsIn(T flags)
+        public virtual bool IsIn(TSet flags)
         {
-            return this.set.IsSupersetOf(flags, this.value)
-                   && this.parents.All(parent => parent.IsIn(flags));
+            return this.parents.All(parent => parent.IsIn(flags));
         }
     }
 }

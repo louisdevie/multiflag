@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 using Multiflag.Bitflags;
+using Multiflag.Enumerators;
 
 namespace Multiflag
 {
     /// <summary>
     ///     Provides bitflags based on dynamic integers (thus allowing any number of flags).
     /// </summary>
-    public class EnumBitflagSet<T> : FlagSet<T>
+    public class EnumBitflagSet<T> : FlagSet<T, T>
     where T : Enum
     {
-        private readonly BitManipulator bitManipulator;
+        private readonly IBitManipulator bitManipulator;
         private readonly Type enumType;
         private readonly Type underlyingType;
 
@@ -27,7 +30,7 @@ namespace Multiflag
             this.bitManipulator = FindBitManipulator(this.underlyingType);
         }
 
-        private static BitManipulator FindBitManipulator(Type underlyingType)
+        private static IBitManipulator FindBitManipulator(Type underlyingType)
         {
             if (underlyingType == typeof(sbyte))
             {
@@ -78,7 +81,7 @@ namespace Multiflag
         }
 
         /// <inheritdoc />
-        protected override sealed void CheckValue(T value)
+        protected override sealed T WrapValue(T value)
         {
             this.bitManipulator.CheckPowerOfTwo(this.EnumToInt(value));
 
@@ -86,36 +89,65 @@ namespace Multiflag
             {
                 throw new UndefinedEnumValueException(value);
             }
+
+            return value;
         }
 
         /// <inheritdoc />
         public override sealed T Empty()
         {
-            return this.IntToEnum(this.bitManipulator.ZeroObject);
-        }
-
-        /// <inheritdoc />
-        public override sealed bool IsEmpty(T flags)
-        {
-            return this.bitManipulator.IsZero(this.EnumToInt(flags));
+            return this.IntToEnum(this.bitManipulator.Zero);
         }
 
         /// <inheritdoc />
         public override sealed T Union(T first, T second)
         {
-            return this.IntToEnum(this.bitManipulator.BitwiseOr(this.EnumToInt(first), this.EnumToInt(second)));
+            return this.IntToEnum(
+                this.bitManipulator.BitwiseOr(
+                    this.EnumToInt(first),
+                    this.EnumToInt(second)
+                )
+            );
+        }
+
+        /// <inheritdoc />
+        public override sealed T Intersection(T first, T second)
+        {
+            return this.IntToEnum(
+                this.bitManipulator.BitwiseAnd(
+                    this.EnumToInt(first),
+                    this.EnumToInt(second)
+                )
+            );
         }
 
         /// <inheritdoc />
         public override sealed T Difference(T first, T second)
         {
-            return this.IntToEnum(this.bitManipulator.BitwiseAndNot(this.EnumToInt(first), this.EnumToInt(second)));
+            return this.IntToEnum(
+                this.bitManipulator.BitwiseAndNot(
+                    this.EnumToInt(first),
+                    this.EnumToInt(second)
+                )
+            );
         }
 
         /// <inheritdoc />
         public override sealed bool IsSupersetOf(T first, T second)
         {
-            return this.bitManipulator.BitwiseAndEquals(this.EnumToInt(first), this.EnumToInt(second));
+            return this.bitManipulator.BitwiseAndEquals(
+                this.EnumToInt(first),
+                this.EnumToInt(second)
+            );
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<T> Iterate(T flags)
+        {
+            return new EnumFlagEnumerator<T>(
+                this.bitManipulator,
+                flags
+            );
         }
     }
 }

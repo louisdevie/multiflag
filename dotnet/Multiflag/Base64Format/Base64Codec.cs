@@ -5,11 +5,11 @@ namespace Multiflag.Base64Format
 {
     internal static class Base64Codec
     {
-        private const char ZERO = 'A';
-        private const char TWENTY_SIX = 'a';
-        private const char FIFTY_TWO = '0';
-        private const char SIXTY_TWO = '-';
-        private const char SIXTY_THREE = '_';
+        public const char ZERO = 'A';
+        public const char TWENTY_SIX = 'a';
+        public const char FIFTY_TWO = '0';
+        public const char SIXTY_TWO = '-';
+        public const char SIXTY_THREE = '_';
 
         private static readonly string zero = ZERO.ToString();
 
@@ -124,6 +124,30 @@ namespace Multiflag.Base64Format
             }
 
             // make sure there is always one digit in the string
+            // empty strings are considered equal to zero, but we always try to normalise the output
+            if (i < 1)
+            {
+                result.Append(ZERO);
+            }
+
+            return result.ToString();
+        }
+
+        public static string BitwiseAnd(string first, string second)
+        {
+            var result = new StringBuilder();
+
+            int shorterLength = Math.Min(first.Length, second.Length);
+            var i = 0;
+            // AND the bytes one by one 
+            for (; i < shorterLength; i++)
+            {
+                int value = DecodeByte(first[i]) & DecodeByte(second[i]);
+                result.Append(EncodeByte(value));
+            }
+
+            // if one string is longer then the other, don't add anything (x & 0 = 0)
+            // but make sure there is always one digit in the string
             // empty strings are considered equal to zero, but we always try to normalise the output
             if (i < 1)
             {

@@ -2,12 +2,12 @@ using System.Collections.Immutable;
 
 namespace Multiflag.Tests;
 
-public class HashedFlagSetTests
+public class CollectionFlagSetTests
 {
     [Fact]
     public void Add()
     {
-        var flags = new HashedFlagSet<string>();
+        var flags = new CollectionFlagSet<string>();
         var flagB = flags.Flag("B");
         var flagC = flags.Flag("C");
         var flagsBAndC = flags.Flag(flagB, flagC);
@@ -20,7 +20,7 @@ public class HashedFlagSetTests
     [Fact]
     public void Remove()
     {
-        var flags = new HashedFlagSet<string>();
+        var flags = new CollectionFlagSet<string>();
         var flagA = flags.Flag("A");
         var flagB = flags.Flag("B");
         var flagC = flags.Flag("C", flagA);
@@ -33,7 +33,7 @@ public class HashedFlagSetTests
     [Fact]
     public void IsIn()
     {
-        var flags = new HashedFlagSet<string>();
+        var flags = new CollectionFlagSet<string>();
         var flagA = flags.Flag("A");
         var flagB = flags.Flag("B");
         var flagC = flags.Flag("C", flagA);
@@ -47,7 +47,7 @@ public class HashedFlagSetTests
     [Fact]
     public void IsAbstract()
     {
-        var flags = new HashedFlagSet<string>();
+        var flags = new CollectionFlagSet<string>();
         var flagA = flags.Flag("A");
         var flagB = flags.Flag("B");
         var flagsAAndB = flags.Flag(flagA, flagB);

@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 
 namespace Multiflag.Bitflags
@@ -12,21 +13,33 @@ namespace Multiflag.Bitflags
 
         public static BigintBitManipulator Current => current ??= new BigintBitManipulator();
 
-        public override BigInteger Zero => 0;
+        public override BigInteger Zero => BigInteger.Zero;
+        
+        public override BigInteger One => BigInteger.One;
+
+        public override bool IsZero(BigInteger value)
+        {
+            return value.IsZero;
+        }
+
+        public override bool IsEven(BigInteger value)
+        {
+            return value.IsEven;
+        }
 
         protected override bool IsPowerOfTwo(BigInteger value)
         {
             return value.IsPowerOfTwo;
         }
 
-        public override bool IsZero(BigInteger flags)
-        {
-            return flags == 0;
-        }
-
         public override BigInteger BitwiseOr(BigInteger first, BigInteger second)
         {
             return first | second;
+        }
+
+        public override BigInteger BitwiseAnd(BigInteger first, BigInteger second)
+        {
+            return first & second;
         }
 
         public override BigInteger BitwiseAndNot(BigInteger first, BigInteger second)
@@ -37,6 +50,16 @@ namespace Multiflag.Bitflags
         public override bool BitwiseAndEquals(BigInteger first, BigInteger second)
         {
             return (first & second) == second;
+        }
+
+        public override BigInteger ShiftLeft(BigInteger value)
+        {
+            return value << 1;
+        }
+
+        public override BigInteger ShiftRight(BigInteger value)
+        {
+            return value >> 1;
         }
     }
 }

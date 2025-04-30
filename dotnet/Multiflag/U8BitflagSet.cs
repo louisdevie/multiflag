@@ -1,16 +1,19 @@
-﻿using Multiflag.Bitflags;
+﻿using System.Collections.Generic;
+using Multiflag.Bitflags;
+using Multiflag.Enumerators;
 
 namespace Multiflag
 {
     /// <summary>
     ///     Provides bitflags based on 8-bit unsigned integers (thus allowing 8 different flags).
     /// </summary>
-    public class U8BitflagSet : FlagSet<byte>
+    public class U8BitflagSet : FlagSet<byte, byte>
     {
         /// <inheritdoc />
-        protected override sealed void CheckValue(byte value)
+        protected override sealed byte WrapValue(byte value)
         {
             U8BitManipulator.Current.CheckPowerOfTwo(value);
+            return value;
         }
 
         /// <inheritdoc />
@@ -20,15 +23,15 @@ namespace Multiflag
         }
 
         /// <inheritdoc />
-        public override sealed bool IsEmpty(byte flags)
-        {
-            return U8BitManipulator.Current.IsZero(flags);
-        }
-
-        /// <inheritdoc />
         public override sealed byte Union(byte first, byte second)
         {
             return U8BitManipulator.Current.BitwiseOr(first, second);
+        }
+
+        /// <inheritdoc />
+        public override sealed byte Intersection(byte first, byte second)
+        {
+            return U8BitManipulator.Current.BitwiseAnd(first, second);
         }
 
         /// <inheritdoc />
@@ -41,6 +44,15 @@ namespace Multiflag
         public override sealed bool IsSupersetOf(byte first, byte second)
         {
             return U8BitManipulator.Current.BitwiseAndEquals(first, second);
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<byte> Iterate(byte flags)
+        {
+            return new NumericFlagEnumerator<byte>(
+                U8BitManipulator.Current,
+                flags
+            );
         }
     }
 }

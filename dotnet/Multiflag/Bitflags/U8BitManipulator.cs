@@ -12,19 +12,35 @@ namespace Multiflag.Bitflags
 
         public override byte Zero => 0;
 
+        public override byte One => 1;
+
+        public override bool IsZero(byte value) => value == 0;
+
+        public override bool IsEven(byte value) => (value & 1) == 0;
+
         protected override bool IsPowerOfTwo(byte value)
         {
             return value != 0 && (value & value - 1) == 0;
         }
-
-        public override bool IsZero(byte flags)
+        
+        public override byte ShiftLeft(byte value)
         {
-            return flags == 0;
+            return (byte)(value << 1);
+        }
+
+        public override byte ShiftRight(byte value)
+        {
+            return (byte)(value >> 1);
         }
 
         public override byte BitwiseOr(byte first, byte second)
         {
             return (byte)(first | second);
+        }
+
+        public override byte BitwiseAnd(byte first, byte second)
+        {
+            return (byte)(first & second);
         }
 
         public override byte BitwiseAndNot(byte first, byte second)

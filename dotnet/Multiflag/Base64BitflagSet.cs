@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Multiflag.Base64Format;
+using Multiflag.Enumerators;
 
 namespace Multiflag
 {
@@ -9,41 +13,20 @@ namespace Multiflag
     ///     <br />
     ///     This format is compact, easily serializable and allows for an unlimited
     ///     number of flags, but is specific to Multiflag.
-    ///     Use <see cref="HashedFlagSet{T}" /> instead if you need the data to be
+    ///     Use <see cref="CollectionFlagSet{T}" /> instead if you need the data to be
     ///     easily understandable by other systems.
     /// </summary>
-    public class Base64BitflagSet : FlagSet<string>
+    public class Base64BitflagSet : FlagSet<int, string>
     {
-        /// <summary>
-        ///     Creates a flag from an index.
-        ///     The value of the flag will be 2 to the power of <paramref name="index" />.
-        /// </summary>
-        /// <param name="index">The index of the flag. It must be greater than or equal to one.</param>
-        /// <param name="parents">Other flags required for this flag to be set.</param>
-        /// <returns>A flag bound to this set.</returns>
-        /// <exception cref="ForeignFlagException">
-        ///     If one of the parents doesn't belong to the same <see cref="FlagSet{T}" />.
-        /// </exception>
-        /// <exception cref="ReusedFlagValueException">
-        ///     If another flag has already been created with the same index.
-        /// </exception>
-        public Flag<string> Flag(int index, params Flag<string>[] parents)
-        {
-            if (index < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), "Indices should be greater than or equal to 1.");
-            }
-
-            return this.Flag(Base64Codec.EncodeSingleFlag(index), parents);
-        }
-
         /// <inheritdoc />
-        protected override sealed void CheckValue(string value)
+        protected override sealed string WrapValue(int value)
         {
-            if (!Base64Codec.DecodesToSingleFlag(value))
+            if (value < 1)
             {
-                throw new InvalidBitflagValueException();
+                throw new ArgumentOutOfRangeException(nameof(value), "Indices should be greater than or equal to 1.");
             }
+
+            return Base64Codec.EncodeSingleFlag(value);
         }
 
         /// <inheritdoc />
@@ -53,15 +36,15 @@ namespace Multiflag
         }
 
         /// <inheritdoc />
-        public override sealed bool IsEmpty(string flags)
-        {
-            return Base64Codec.DecodesToZero(flags);
-        }
-
-        /// <inheritdoc />
         public override sealed string Union(string first, string second)
         {
             return Base64Codec.BitwiseOr(first, second);
+        }
+
+        /// <inheritdoc />
+        public override sealed string Intersection(string first, string second)
+        {
+            return Base64Codec.BitwiseAnd(first, second);
         }
 
         /// <inheritdoc />
@@ -74,6 +57,12 @@ namespace Multiflag
         public override sealed bool IsSupersetOf(string first, string second)
         {
             return Base64Codec.BitwiseAndEquals(first, second);
+        }
+
+        /// <inheritdoc />
+        public override sealed IEnumerable<int> Iterate(string flags)
+        {
+            return new Base64FlagEnumerator(flags);
         }
     }
 }
