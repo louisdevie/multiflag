@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-npm:
-    if: ${{ github.ref == 'refs/tags/node/*' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/node/') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
