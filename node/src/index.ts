@@ -1,4 +1,10 @@
-export { default as Flag } from './flag'
-export { default as FlagValue } from './flag-value'
-export { default as NumberFlag } from './number-flag'
-export { default as ArrayFlag } from './array-flag'
+export { ArrayFlagSet } from './array'
+export { Base64BitflagSet } from './base64'
+export { DynamicBitflagSet } from './bigint'
+export { CollectionFlagSet } from './collection'
+export {
+    InvalidBitflagValueError,
+    ReusedFlagValueError,
+    ForeignFlagError,
+} from './errors'
+export { NumberBitflagSet } from './number'

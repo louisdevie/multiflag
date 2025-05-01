@@ -27,21 +27,21 @@ This covers most of the common needs, but you can subclass `FlagSet` to work wit
 
 ## Compatible flag types
 
-|                           .NET                            | JS | .NET (v1)  |   JS (v1)    |
-|:---------------------------------------------------------:|:--:|:----------:|:------------:|
-|  `U8BitflagSet` <br/> `EnumBitflagSet` backed by `byte`   | ✗  |  `Flag8`   | `NumberFlag` |
-| `U16BitflagSet` <br/> `EnumBitflagSet` backed by `ushort` | ✗  |  `Flag16`  | `NumberFlag` |
-|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  | ✗  |  `Flag32`  | `NumberFlag` |
-| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  | ✗  |  `Flag64`  |      ✗       |
-|                    `DynamicBitflagSet`                    | ✗  |     ✗      |      ✗       |
-|                    `Base64BitflagSet`                     | ✗  |     ✗      |      ✗       |
-|                      `HashedFlagSet`                      | ✗  | `FlagSet`  | `ArrayFlag`  |
-|                             ✗                             | ✗  | `FlagEnum` | `NumberFlag` |
+|                           .NET                            |                    JS                    | .NET (v1)  |   JS (v1)    |
+|:---------------------------------------------------------:|:----------------------------------------:|:----------:|:------------:|
+|  `U8BitflagSet` <br/> `EnumBitflagSet` backed by `byte`   |            `NumberBitflagSet`            |  `Flag8`   | `NumberFlag` |
+| `U16BitflagSet` <br/> `EnumBitflagSet` backed by `ushort` |            `NumberBitflagSet`            |  `Flag16`  | `NumberFlag` |
+|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  |            `NumberBitflagSet`            |  `Flag32`  | `NumberFlag` |
+| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  |           `DynamicBitflagSet`            |  `Flag64`  |      ✗       |
+|                    `DynamicBitflagSet`                    |           `DynamicBitflagSet`            |     ✗      |      ✗       |
+|                    `Base64BitflagSet`                     |            `Base64BitflagSet`            |     ✗      |      ✗       |
+|          `CollectionFlagSet` <br/> `ListFlagSet`          | `CollectionFlagSet` <br/> `ArrayFlagSet` | `FlagSet`  | `ArrayFlag`  |
+|                             ✗                             |            `NumberBitflagSet`            | `FlagEnum` | `NumberFlag` |
 
 ## Why it exists
 
 This library was developed to provide the [Gallium+](https://github.com/galliumplus) server and clients with a reliable way to manage permissions.
-The primary goal is to support C# and Typescipt, but support for other languages (I'm thinking Python, Go, Rust)
+The primary goal is to support C# and Typescript, but support for other languages (I'm thinking Python, Go, Rust)
 may come later.
 
 ## Licensing

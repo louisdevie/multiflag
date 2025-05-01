@@ -1,11 +1,11 @@
 {
   "name": "multiflag",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "flag/bitflag helper",
   "main": "index.js",
   "scripts": {
     "build": "tsup",
-    "postbuild": "cp package.json dist",
+    "postbuild": "cp package.json README.md ../LICENSE dist",
     "test": "jest",
     "type-check": "tsc --noEmit",
     "format": "prettier --write src/ tests/"
@@ -21,6 +21,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "moduleNameMapper": {
+        "@module": "<rootDir>/src/index.ts"
+    },
     "collectCoverageFrom": ["src/**/*.ts"],
     "coverageReporters": [ ["cobertura", {"file": "coverage.xml"}] ]
   },
@@ -39,12 +42,12 @@
   },
   "homepage": "https://github.com/louisdevie/multiflag#readme",
   "devDependencies": {
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
-    "prettier": "^3.1.0",
-    "ts-jest": "^29.1.1",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "tsup": "^8.3.5",
+    "typescript": "^5.8.3"
   }
 }
