@@ -1,5 +1,4 @@
-import { NumberBitflagSet } from '@module'
-import { ForeignFlagError } from '../src/errors'
+import { NumberBitflagSet, ForeignFlagError } from '@module'
 
 test('cannot create a flag with a foreign parent', () => {
     const flags = new NumberBitflagSet()

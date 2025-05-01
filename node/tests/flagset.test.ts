@@ -1,5 +1,4 @@
-import { NumberBitflagSet } from '@module'
-import { ReusedFlagValueError } from '../src/errors'
+import { NumberBitflagSet, ReusedFlagValueError } from '@module'
 
 test('cannot create an abstract flag with less than two parents', () => {
     const flags = new NumberBitflagSet()
