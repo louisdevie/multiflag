@@ -13,23 +13,37 @@ especially if you have flags that depend on each other (for example, if you're m
 - [Multiflag JavaScript/TypeScript](node/README.md)&emsp;[![npm](https://img.shields.io/npm/v/multiflag)](https://https://www.npmjs.com/package/multiflag)
 
 
-## How it works
+## What it does
 
-Multiflag work with two types : flags and flag sets.
-A flag set can be any value that can represent a group of boolean properties (integers as bitflags, a list of the enabled flags, ...).
-A flag is one of these properties, and can be dependant on other flags. When a flag is added, all of its parent are too. All its parents are also required
-for the flag to be considered included in the set. And when it is removed, all of its child flags are removed with it.
-There is actually a third type coming into play: the "value adapter". Its job is to bridge the gap between a flag and the value it is based on
-by providing the relevant operation on said type.
+The Multiflag API exposes two kind of classes : `FlagSet`s and `Flag`s.
+A flag set is a group of unique `Flag`s of the same type that can have dependencies on each other. 
+A flag represent a distinct value in the set, and can require other "parent" flags. A flag is considered present in a
+value only when its parents are present too. When a flag is added, all of its parents are added with it, and when it is
+removed, all of its child flags are removed with it.
 
-Two kind of flags are supported out of the box : a bitflag implementation for integers and enums, and a list-based (or rather, set-based) implementation, which covers most of the common needs.
-But Multiflag is extensible, you can implement an adapter for any custom type of flag representation you want.
+Basic types are supported out of the box : a bitflag implementation for unsigned integers and enums,
+a hashset-based implementation and a bitflag implementation that works with base64 strings.
+This covers most of the common needs, but you can subclass `FlagSet` to work with any custom type you want.
 
-## Why ?
+## Compatible flag types
 
-This library was developed to provide the [Gallium+](https://github.com/galliumplus) server and clients with a reliable way to manage permissions. The primary goal
-is thus to support C# and Typescipt, but support for other languages (I'm thinking Python, Go, Rust) may come later.
+|                           .NET                            |                    JS                    | .NET (v1)  |   JS (v1)    |
+|:---------------------------------------------------------:|:----------------------------------------:|:----------:|:------------:|
+|  `U8BitflagSet` <br/> `EnumBitflagSet` backed by `byte`   |            `NumberBitflagSet`            |  `Flag8`   | `NumberFlag` |
+| `U16BitflagSet` <br/> `EnumBitflagSet` backed by `ushort` |            `NumberBitflagSet`            |  `Flag16`  | `NumberFlag` |
+|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  |            `NumberBitflagSet`            |  `Flag32`  | `NumberFlag` |
+| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  |           `DynamicBitflagSet`            |  `Flag64`  |      ✗       |
+|                    `DynamicBitflagSet`                    |           `DynamicBitflagSet`            |     ✗      |      ✗       |
+|                    `Base64BitflagSet`                     |            `Base64BitflagSet`            |     ✗      |      ✗       |
+|          `CollectionFlagSet` <br/> `ListFlagSet`          | `CollectionFlagSet` <br/> `ArrayFlagSet` | `FlagSet`  | `ArrayFlag`  |
+|                             ✗                             |            `NumberBitflagSet`            | `FlagEnum` | `NumberFlag` |
+
+## Why it exists
+
+This library was developed to provide the [Gallium+](https://github.com/galliumplus) server and clients with a reliable way to manage permissions.
+The primary goal is to support C# and Typescript, but support for other languages (I'm thinking Python, Go, Rust)
+may come later.
 
 ## Licensing
 
-Multiglag is available under the [MIT License](LICENSE). ⓒ 2023 Louis DEVIE.
+Multiglag is available under the [MIT License](LICENSE). ⓒ 2023-2025 Louis DEVIE.
