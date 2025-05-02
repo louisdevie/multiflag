@@ -6,6 +6,25 @@ on:
       - '**'
 
 jobs:
+  publish-nuget:
+    if: ${{ startsWith(github.ref, 'refs/tags/dotnet/') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dotnet
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Package C# library
+        run: dotnet pack Multiflag -c Release -o ./pkg
+      - name: Push to nuget.org
+        run: dotnet nuget push ./pkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          
   publish-npm:
     if: ${{ startsWith(github.ref, 'refs/tags/node/') }}
     runs-on: ubuntu-latest
