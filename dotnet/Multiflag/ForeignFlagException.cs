@@ -4,7 +4,7 @@ namespace Multiflag
 {
     /// <summary>
     ///     Exception thrown when a flag is associated with another one
-    ///     that was created from a different <see cref="FlagSet{T}" />.
+    ///     that was created from a different <see cref="FlagSet{TValue, TSet}" />.
     /// </summary>
     public class ForeignFlagException : ArgumentException
     {
