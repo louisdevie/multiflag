@@ -21,6 +21,8 @@ jobs:
           dotnet-version: 7.x
       - name: Restore dependencies
         run: dotnet restore
+      - name: Build solution
+        run: dotnet build /warnaserror
       - name: Run tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput='../coverage.xml'
       - name: Report coverage
