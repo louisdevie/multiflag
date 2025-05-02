@@ -6,7 +6,9 @@ public class EnumBitflagSetTests
     public void SignedEnumsAreUnsupported()
     {
         Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<S8Enum>());
+        Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<U8Enum>());
         Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<S16Enum>());
+        Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<U16Enum>());
         Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<S32Enum>());
         Assert.Throws<UnsupportedEnumTypeException>(() => new EnumBitflagSet<S64Enum>());
     }
@@ -23,7 +25,92 @@ public class EnumBitflagSetTests
     public void ValueNotDefined()
     {
         var flags = new EnumBitflagSet<U32Enum>();
-        Assert.Throws<UndefinedEnumValueException>(() => flags.Flag((U32Enum)8));
+        Assert.Throws<UndefinedEnumValueException>(() => flags.Flag((U32Enum)256));
+    }
+
+    [Fact]
+    public void Union()
+    {
+        var flags = new EnumBitflagSet<U32Enum>();
+
+        Assert.Equal((U32Enum)0, flags.Union(0, 0));
+        Assert.Equal(U32Enum.A, flags.Union(U32Enum.A, 0));
+        Assert.Equal(U32Enum.B, flags.Union(0, U32Enum.B));
+        Assert.Equal((U32Enum)3, flags.Union(U32Enum.A, U32Enum.B));
+        Assert.Equal((U32Enum)7, flags.Union((U32Enum)3, (U32Enum)6));
+    }
+
+    [Fact] 
+    public void Difference() {
+        var flags = new EnumBitflagSet<U32Enum>();
+
+        Assert.Equal((U32Enum)0, flags.Difference(0, 0));
+        Assert.Equal(U32Enum.A, flags.Difference(U32Enum.A, 0));
+        Assert.Equal(U32Enum.A, flags.Difference((U32Enum)3, (U32Enum)6));
+        Assert.Equal(U32Enum.C, flags.Difference((U32Enum)6, (U32Enum)3));
+        Assert.Equal(U32Enum.D, flags.Difference(U32Enum.D, (U32Enum)17));
+    }
+
+    [Fact]
+    public void Intersection()
+    {
+        var flags = new EnumBitflagSet<U32Enum>();
+
+        Assert.Equal((U32Enum)0, flags.Intersection(0, 0));
+        Assert.Equal((U32Enum)0, flags.Intersection(U32Enum.A, 0));
+        Assert.Equal((U32Enum)0, flags.Intersection(U32Enum.A, U32Enum.B));
+        Assert.Equal(U32Enum.A, flags.Intersection(U32Enum.A, (U32Enum)3));
+        Assert.Equal(U32Enum.A, flags.Intersection((U32Enum)11, (U32Enum)5));
+        Assert.Equal((U32Enum)3, flags.Intersection((U32Enum)11, (U32Enum)7));
+    }
+
+    [Fact]
+    public void Iterate()
+    {
+        var flags = new EnumBitflagSet<U32Enum>();
+
+        Assert.Equal([], flags.Iterate(0));
+        Assert.Equal([U32Enum.A], flags.Iterate(U32Enum.A));
+        Assert.Equal([U32Enum.B], flags.Iterate(U32Enum.B));
+        Assert.Equal([U32Enum.A, U32Enum.B], flags.Iterate((U32Enum)3));
+        Assert.Equal([U32Enum.A, U32Enum.B, U32Enum.D], flags.Iterate((U32Enum)11));
+        Assert.Equal([U32Enum.C, U32Enum.F, U32Enum.G], flags.Iterate((U32Enum)100));
+    }
+
+    [Fact]
+    public void Minimum()
+    {
+        var flags = new EnumBitflagSet<U32Enum>();
+        var flag1 = flags.Flag(U32Enum.A);
+        var flag2 = flags.Flag(U32Enum.B, flag1);
+        var flag4 = flags.Flag(U32Enum.C, flag1);
+        var flag8 = flags.Flag(U32Enum.D, flag4);
+
+        Assert.Equal((U32Enum)0, flags.Minimum(0));
+        Assert.Equal(U32Enum.A, flags.Minimum(U32Enum.A));
+        Assert.Equal((U32Enum)0, flags.Minimum(U32Enum.B));
+        Assert.Equal((U32Enum)3, flags.Minimum((U32Enum)3));
+        Assert.Equal((U32Enum)3, flags.Minimum((U32Enum)11));
+        Assert.Equal((U32Enum)13, flags.Minimum((U32Enum)13));
+        Assert.Equal(U32Enum.A, flags.Minimum((U32Enum)17));
+    }
+
+    [Fact]
+    public void Maximum()
+    {
+        var flags = new EnumBitflagSet<U32Enum>();
+        var flag1 = flags.Flag(U32Enum.A);
+        var flag2 = flags.Flag(U32Enum.B, flag1);
+        var flag4 = flags.Flag(U32Enum.C, flag1);
+        var flag8 = flags.Flag(U32Enum.D, flag4);
+
+        Assert.Equal((U32Enum)0, flags.Maximum(0));
+        Assert.Equal(U32Enum.A, flags.Maximum(U32Enum.A));
+        Assert.Equal((U32Enum)3, flags.Maximum(U32Enum.B));
+        Assert.Equal((U32Enum)3, flags.Maximum((U32Enum)3));
+        Assert.Equal((U32Enum)15, flags.Maximum((U32Enum)11));
+        Assert.Equal((U32Enum)13, flags.Maximum((U32Enum)13));
+        Assert.Equal(U32Enum.A, flags.Maximum((U32Enum)17));
     }
 
     [Fact]
@@ -37,32 +124,6 @@ public class EnumBitflagSetTests
         Assert.Equal((U32Enum)3, U32Enum.A + flagB);
         Assert.Equal((U32Enum)5, U32Enum.A + flagC);
         Assert.Equal((U32Enum)7, U32Enum.A + flags2And4);
-    }
-
-    [Fact]
-    public void Add8Bit()
-    {
-        var flags = new EnumBitflagSet<U8Enum>();
-        var flagB = flags.Flag(U8Enum.B);
-        var flagC = flags.Flag(U8Enum.C);
-        var flags2And4 = flags.Flag(flagB, flagC);
-
-        Assert.Equal((U8Enum)3, U8Enum.A + flagB);
-        Assert.Equal((U8Enum)5, U8Enum.A + flagC);
-        Assert.Equal((U8Enum)7, U8Enum.A + flags2And4);
-    }
-
-    [Fact]
-    public void Add16Bit()
-    {
-        var flags = new EnumBitflagSet<U16Enum>();
-        var flagB = flags.Flag(U16Enum.B);
-        var flagC = flags.Flag(U16Enum.C);
-        var flags2And4 = flags.Flag(flagB, flagC);
-
-        Assert.Equal((U16Enum)3, U16Enum.A + flagB);
-        Assert.Equal((U16Enum)5, U16Enum.A + flagC);
-        Assert.Equal((U16Enum)7, U16Enum.A + flags2And4);
     }
 
     [Fact]
@@ -122,21 +183,11 @@ public class EnumBitflagSetTests
 
     private enum S8Enum : sbyte;
 
-    private enum U8Enum : byte
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
+    private enum U8Enum : byte;
 
     private enum S16Enum : short;
 
-    private enum U16Enum : ushort
-    {
-        A = 1,
-        B = 2,
-        C = 4
-    }
+    private enum U16Enum : ushort;
 
     private enum S32Enum;
 
@@ -144,7 +195,11 @@ public class EnumBitflagSetTests
     {
         A = 1,
         B = 2,
-        C = 4
+        C = 4,
+        D = 8,
+        E = 16,
+        F = 32,
+        G = 64,
     }
 
     private enum S64Enum : long;
