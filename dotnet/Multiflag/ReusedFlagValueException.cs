@@ -3,8 +3,8 @@ using System;
 namespace Multiflag
 {
     /// <summary>
-    ///     Exception thrown if the <see cref="FlagSet{T}.Flag(T, ValueFlag{T}[])" /> method is called
-    ///     with a value that was already used for another flag in the same <see cref="FlagSet{T}" />.
+    ///     Exception thrown if the <see cref="FlagSet{TValue, TSet}.Flag(TValue, Flag{TSet}[])" /> method is called
+    ///     with a value that was already used for another flag in the same <see cref="FlagSet{TValue, TSet}" />.
     /// </summary>
     public class ReusedFlagValueException : ArgumentException
     {
