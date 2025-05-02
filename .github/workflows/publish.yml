@@ -21,11 +21,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build solution
-        run: dotnet build /warnaserror
-      - name: Package C# library
-        run: dotnet pack Multiflag -c Release -o ./pkg
+        run: dotnet build /warnaserror -c Release
       - name: Push to nuget.org
-        run: dotnet nuget push ./pkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./Multiflag/bin/Release/Multiflag.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           
   publish-npm:
     if: ${{ startsWith(github.ref, 'refs/tags/node/') }}
