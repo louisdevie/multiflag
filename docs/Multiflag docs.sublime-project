@@ -1,0 +1,11 @@
+{
+	"folders":
+	[
+		{
+			"path": "source"
+		}
+	],
+	"settings": {
+		"rulers": [80]
+	}
+}

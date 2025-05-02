@@ -10,7 +10,7 @@ Multiflag is a tiny language-agnostic library that makes manipulating bitflags (
 especially if you have flags that depend on each other (for example, if you're managing permissions).
 
 - [Multiflag .NET](dotnet/README.md)&emsp;[![Nuget Package](https://img.shields.io/nuget/v/Multiflag)](https://www.nuget.org/packages/Multiflag)
-- [Multiflag JavaScript/TypeScript](node/README.md)&emsp;[![npm](https://img.shields.io/npm/v/multiflag)](https://https://www.npmjs.com/package/multiflag)
+- [Multiflag JavaScript/TypeScript](node/README.md)&emsp;[![npm](https://img.shields.io/npm/v/multiflag)](https://www.npmjs.com/package/multiflag)
 
 
 ## What it does
@@ -27,16 +27,13 @@ This covers most of the common needs, but you can subclass `FlagSet` to work wit
 
 ## Compatible flag types
 
-|                           .NET                            |                    JS                    | .NET (v1)  |   JS (v1)    |
-|:---------------------------------------------------------:|:----------------------------------------:|:----------:|:------------:|
-|  `U8BitflagSet` <br/> `EnumBitflagSet` backed by `byte`   |            `NumberBitflagSet`            |  `Flag8`   | `NumberFlag` |
-| `U16BitflagSet` <br/> `EnumBitflagSet` backed by `ushort` |            `NumberBitflagSet`            |  `Flag16`  | `NumberFlag` |
-|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  |            `NumberBitflagSet`            |  `Flag32`  | `NumberFlag` |
-| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  |           `DynamicBitflagSet`            |  `Flag64`  |      ✗       |
-|                    `DynamicBitflagSet`                    |           `DynamicBitflagSet`            |     ✗      |      ✗       |
-|                    `Base64BitflagSet`                     |            `Base64BitflagSet`            |     ✗      |      ✗       |
-|          `CollectionFlagSet` <br/> `ListFlagSet`          | `CollectionFlagSet` <br/> `ArrayFlagSet` | `FlagSet`  | `ArrayFlag`  |
-|                             ✗                             |            `NumberBitflagSet`            | `FlagEnum` | `NumberFlag` |
+|                           .NET                            |                    JS                    |               .NET (v1)               |   JS (v1)    |
+|:---------------------------------------------------------:|:----------------------------------------:|:-------------------------------------:|:------------:|
+|  `U32BitflagSet` <br/> `EnumBitflagSet` backed by `uint`  |            `NumberBitflagSet`            | `Flag8` <br/> `Flag16` <br/> `Flag32` | `NumberFlag` |
+| `U64BitflagSet` <br/> `EnumBitflagSet` backed by `ulong`  |           `DynamicBitflagSet`            |               `Flag64`                |      ✗       |
+|                    `DynamicBitflagSet`                    |           `DynamicBitflagSet`            |                   ✗                   |      ✗       |
+|                    `Base64BitflagSet`                     |            `Base64BitflagSet`            |                   ✗                   |      ✗       |
+|          `CollectionFlagSet` <br/> `ListFlagSet`          | `CollectionFlagSet` <br/> `ArrayFlagSet` |               `FlagSet`               | `ArrayFlag`  |
 
 ## Why it exists
 
@@ -46,4 +43,4 @@ may come later.
 
 ## Licensing
 
-Multiglag is available under the [MIT License](LICENSE). ⓒ 2023-2025 Louis DEVIE.
+Multiflag is available under the [MIT License](LICENSE). ⓒ 2023-2025 Louis DEVIE.
