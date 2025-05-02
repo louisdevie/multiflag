@@ -20,6 +20,8 @@ jobs:
           dotnet-version: 9.x
       - name: Restore dependencies
         run: dotnet restore
+      - name: Build solution
+        run: dotnet build /warnaserror
       - name: Package C# library
         run: dotnet pack Multiflag -c Release -o ./pkg
       - name: Push to nuget.org
