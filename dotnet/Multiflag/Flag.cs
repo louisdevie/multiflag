@@ -4,12 +4,11 @@ using System.Linq;
 namespace Multiflag
 {
     /// <summary>
-    ///     A <see cref="Flag{T}" /> represents some element of
+    ///     A <see cref="Flag{TSet}" /> represents some element of
     ///     <typeparamref name="TSet" /> that can be added or removed from the set.
     ///     When a flag is added to the set, all of its parents are added along
     ///     with it, and when it is removed all of its children are removed too.
     /// </summary>
-    /// <typeparam name="TSet"></typeparam>
     public class Flag<TSet>
     {
         private readonly ISetOperations<TSet> operations;
