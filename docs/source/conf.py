@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = "Multiflag"
-copyright = "2023, Louis DEVIE"
+copyright = "2023-2025, Louis DEVIE"
 author = "Louis DEVIE"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0"
+release = "2.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,7 +30,7 @@ release = "1.0"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = ["sphinx_tabs.tabs", "sphinxcontrib.mermaid"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -52,3 +52,12 @@ html_theme = "furo"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+html_css_files = ["overrides.css"]
+
+
+# -- reST configuration ------------------------------------------------------
+
+rst_prolog = """
+.. role:: badge
+"""
