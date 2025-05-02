@@ -5,81 +5,81 @@ public class FlagTests
     [Fact]
     public void AddTo()
     {
-        Assert.Equal(1, MyBitflags.Current.FlagA.AddTo(0));
-        Assert.Equal(3, MyBitflags.Current.FlagA.AddTo(2));
-        Assert.Equal(7, MyBitflags.Current.FlagA.AddTo(7));
+        Assert.Equal(1u, MyBitflags.Current.FlagA.AddTo(0));
+        Assert.Equal(3u, MyBitflags.Current.FlagA.AddTo(2));
+        Assert.Equal(7u, MyBitflags.Current.FlagA.AddTo(7));
 
-        Assert.Equal(2, MyBitflags.Current.FlagB.AddTo(0));
-        Assert.Equal(2, MyBitflags.Current.FlagB.AddTo(2));
-        Assert.Equal(7, MyBitflags.Current.FlagB.AddTo(7));
+        Assert.Equal(2u, MyBitflags.Current.FlagB.AddTo(0));
+        Assert.Equal(2u, MyBitflags.Current.FlagB.AddTo(2));
+        Assert.Equal(7u, MyBitflags.Current.FlagB.AddTo(7));
 
-        Assert.Equal(3, MyBitflags.Current.FlagC.AddTo(0));
-        Assert.Equal(3, MyBitflags.Current.FlagC.AddTo(2));
-        Assert.Equal(7, MyBitflags.Current.FlagC.AddTo(7));
+        Assert.Equal(3u, MyBitflags.Current.FlagC.AddTo(0));
+        Assert.Equal(3u, MyBitflags.Current.FlagC.AddTo(2));
+        Assert.Equal(7u, MyBitflags.Current.FlagC.AddTo(7));
 
-        Assert.Equal(7, MyBitflags.Current.FlagD.AddTo(2));
-        Assert.Equal(5, MyBitflags.Current.FlagD.AddTo(0));
-        Assert.Equal(7, MyBitflags.Current.FlagD.AddTo(7));
+        Assert.Equal(7u, MyBitflags.Current.FlagD.AddTo(2));
+        Assert.Equal(5u, MyBitflags.Current.FlagD.AddTo(0));
+        Assert.Equal(7u, MyBitflags.Current.FlagD.AddTo(7));
     }
 
     [Fact]
     public void Addition()
     {
-        Assert.Equal(1, 0 + MyBitflags.Current.FlagA);
-        Assert.Equal(3, 2 + MyBitflags.Current.FlagA);
-        Assert.Equal(7, 7 + MyBitflags.Current.FlagA);
+        Assert.Equal(1u, 0 + MyBitflags.Current.FlagA);
+        Assert.Equal(3u, 2 + MyBitflags.Current.FlagA);
+        Assert.Equal(7u, 7 + MyBitflags.Current.FlagA);
 
-        Assert.Equal(2, 0 + MyBitflags.Current.FlagB);
-        Assert.Equal(2, 2 + MyBitflags.Current.FlagB);
-        Assert.Equal(7, 7 + MyBitflags.Current.FlagB);
+        Assert.Equal(2u, 0 + MyBitflags.Current.FlagB);
+        Assert.Equal(2u, 2 + MyBitflags.Current.FlagB);
+        Assert.Equal(7u, 7 + MyBitflags.Current.FlagB);
 
-        Assert.Equal(3, 0 + MyBitflags.Current.FlagC);
-        Assert.Equal(3, 2 + MyBitflags.Current.FlagC);
-        Assert.Equal(7, 7 + MyBitflags.Current.FlagC);
+        Assert.Equal(3u, 0 + MyBitflags.Current.FlagC);
+        Assert.Equal(3u, 2 + MyBitflags.Current.FlagC);
+        Assert.Equal(7u, 7 + MyBitflags.Current.FlagC);
 
-        Assert.Equal(7, 2 + MyBitflags.Current.FlagD);
-        Assert.Equal(5, 0 + MyBitflags.Current.FlagD);
-        Assert.Equal(7, 7 + MyBitflags.Current.FlagD);
+        Assert.Equal(7u, 2 + MyBitflags.Current.FlagD);
+        Assert.Equal(5u, 0 + MyBitflags.Current.FlagD);
+        Assert.Equal(7u, 7 + MyBitflags.Current.FlagD);
     }
 
     [Fact]
     public void RemoveFrom()
     {
-        Assert.Equal(0, MyBitflags.Current.FlagA.RemoveFrom(0));
-        Assert.Equal(2, MyBitflags.Current.FlagA.RemoveFrom(2));
-        Assert.Equal(2, MyBitflags.Current.FlagA.RemoveFrom(7));
+        Assert.Equal(0u, MyBitflags.Current.FlagA.RemoveFrom(0));
+        Assert.Equal(2u, MyBitflags.Current.FlagA.RemoveFrom(2));
+        Assert.Equal(2u, MyBitflags.Current.FlagA.RemoveFrom(7));
 
-        Assert.Equal(0, MyBitflags.Current.FlagB.RemoveFrom(0));
-        Assert.Equal(0, MyBitflags.Current.FlagB.RemoveFrom(2));
-        Assert.Equal(5, MyBitflags.Current.FlagB.RemoveFrom(7));
+        Assert.Equal(0u, MyBitflags.Current.FlagB.RemoveFrom(0));
+        Assert.Equal(0u, MyBitflags.Current.FlagB.RemoveFrom(2));
+        Assert.Equal(5u, MyBitflags.Current.FlagB.RemoveFrom(7));
 
-        Assert.Equal(0, MyBitflags.Current.FlagC.RemoveFrom(0));
-        Assert.Equal(2, MyBitflags.Current.FlagC.RemoveFrom(2));
-        Assert.Equal(7, MyBitflags.Current.FlagC.RemoveFrom(7));
+        Assert.Equal(0u, MyBitflags.Current.FlagC.RemoveFrom(0));
+        Assert.Equal(2u, MyBitflags.Current.FlagC.RemoveFrom(2));
+        Assert.Equal(7u, MyBitflags.Current.FlagC.RemoveFrom(7));
 
-        Assert.Equal(2, MyBitflags.Current.FlagD.RemoveFrom(2));
-        Assert.Equal(0, MyBitflags.Current.FlagD.RemoveFrom(0));
-        Assert.Equal(3, MyBitflags.Current.FlagD.RemoveFrom(7));
+        Assert.Equal(2u, MyBitflags.Current.FlagD.RemoveFrom(2));
+        Assert.Equal(0u, MyBitflags.Current.FlagD.RemoveFrom(0));
+        Assert.Equal(3u, MyBitflags.Current.FlagD.RemoveFrom(7));
     }
 
     [Fact]
     public void Subtraction()
     {
-        Assert.Equal(0, 0 - MyBitflags.Current.FlagA);
-        Assert.Equal(2, 2 - MyBitflags.Current.FlagA);
-        Assert.Equal(2, 7 - MyBitflags.Current.FlagA);
+        Assert.Equal(0u, 0 - MyBitflags.Current.FlagA);
+        Assert.Equal(2u, 2 - MyBitflags.Current.FlagA);
+        Assert.Equal(2u, 7 - MyBitflags.Current.FlagA);
 
-        Assert.Equal(0, 0 - MyBitflags.Current.FlagB);
-        Assert.Equal(0, 2 - MyBitflags.Current.FlagB);
-        Assert.Equal(5, 7 - MyBitflags.Current.FlagB);
+        Assert.Equal(0u, 0 - MyBitflags.Current.FlagB);
+        Assert.Equal(0u, 2 - MyBitflags.Current.FlagB);
+        Assert.Equal(5u, 7 - MyBitflags.Current.FlagB);
 
-        Assert.Equal(0, 0 - MyBitflags.Current.FlagC);
-        Assert.Equal(2, 2 - MyBitflags.Current.FlagC);
-        Assert.Equal(7, 7 - MyBitflags.Current.FlagC);
+        Assert.Equal(0u, 0 - MyBitflags.Current.FlagC);
+        Assert.Equal(2u, 2 - MyBitflags.Current.FlagC);
+        Assert.Equal(7u, 7 - MyBitflags.Current.FlagC);
 
-        Assert.Equal(0, 0 - MyBitflags.Current.FlagD);
-        Assert.Equal(2, 2 - MyBitflags.Current.FlagD);
-        Assert.Equal(3, 7 - MyBitflags.Current.FlagD);
+        Assert.Equal(0u, 0 - MyBitflags.Current.FlagD);
+        Assert.Equal(2u, 2 - MyBitflags.Current.FlagD);
+        Assert.Equal(3u, 7 - MyBitflags.Current.FlagD);
     }
 
     [Fact]
@@ -119,7 +119,7 @@ public class FlagTests
         Assert.False(MyBitflags.Current.FlagD.IsAbstract);
     }
 
-    private class MyBitflags : U8BitflagSet
+    private class MyBitflags : U32BitflagSet
     {
         private static MyBitflags? current;
 
@@ -133,9 +133,9 @@ public class FlagTests
 
         public static MyBitflags Current => current ??= new MyBitflags();
 
-        public Flag<byte> FlagA { get; }
-        public Flag<byte> FlagB { get; }
-        public Flag<byte> FlagC { get; }
-        public Flag<byte> FlagD { get; }
+        public Flag<uint> FlagA { get; }
+        public Flag<uint> FlagB { get; }
+        public Flag<uint> FlagC { get; }
+        public Flag<uint> FlagD { get; }
     }
 }

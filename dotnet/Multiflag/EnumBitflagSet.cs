@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Multiflag.Bitflags;
 using Multiflag.Enumerators;
 
@@ -32,41 +31,21 @@ namespace Multiflag
 
         private static IBitManipulator FindBitManipulator(Type underlyingType)
         {
-            if (underlyingType == typeof(sbyte))
-            {
-                throw new UnsupportedEnumTypeException(underlyingType, "byte");
-            }
-            else if (underlyingType == typeof(byte))
-            {
-                return U8BitManipulator.Current;
-            }
-            else if (underlyingType == typeof(short))
-            {
-                throw new UnsupportedEnumTypeException(underlyingType, "ushort");
-            }
-            else if (underlyingType == typeof(ushort))
-            {
-                return U16BitManipulator.Current;
-            }
-            else if (underlyingType == typeof(int))
-            {
-                throw new UnsupportedEnumTypeException(underlyingType, "uint");
-            }
-            else if (underlyingType == typeof(uint))
+            if (underlyingType == typeof(uint))
             {
                 return U32BitManipulator.Current;
-            }
-            else if (underlyingType == typeof(long))
-            {
-                throw new UnsupportedEnumTypeException(underlyingType, "ulong");
             }
             else if (underlyingType == typeof(ulong))
             {
                 return U64BitManipulator.Current;
             }
+            else if (underlyingType == typeof(long))
+            {
+                throw new UnsupportedEnumTypeException(underlyingType, "ulong");
+            } 
             else
             {
-                throw new UnsupportedEnumTypeException(underlyingType);
+                throw new UnsupportedEnumTypeException(underlyingType, "uint");
             }
         }
 

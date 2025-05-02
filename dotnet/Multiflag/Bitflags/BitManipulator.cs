@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Multiflag.Bitflags
 {
     internal abstract class BitManipulator<T> : IBitManipulator

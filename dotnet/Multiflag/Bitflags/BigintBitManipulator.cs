@@ -1,4 +1,3 @@
-using System;
 using System.Numerics;
 
 namespace Multiflag.Bitflags
