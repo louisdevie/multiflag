@@ -41,7 +41,7 @@ namespace Multiflag.Enumerators
             while (this.bitManipulator.IsEven(this.remaining))
             {
                 this.remaining = this.bitManipulator.ShiftRight(this.remaining);
-                this.current = this.bitManipulator.ShiftLeft(this.remaining);
+                this.current = this.bitManipulator.ShiftLeft(this.current);
             }
 
             // discard this bit
